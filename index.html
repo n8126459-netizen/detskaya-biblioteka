@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детская библиотека С. Ремонтное</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            background-color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 10px 15px;
+            width: 60%;
+            max-width: 500px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #388E3C;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .books-section {
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #4CAF50;
+            margin: 10px auto;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .book-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 15px;
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .book-author {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .book-summary {
+            color: #777;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-more {
+            color: #2196F3;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #FF9800;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .modal-book-cover {
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal-book-title {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .modal-book-author {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .modal-book-summary {
+            margin-top: 15px;
+            line-height: 1.7;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        @media (max-width: 768px) {
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .search-input {
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .search-input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Детская библиотека С. Ремонтное</h1>
+            <p class="subtitle">Мир сказок и приключений для юных читателей</p>
+        </div>
+    </header>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Поиск книг, авторов...">
+                <button class="search-button">Найти</button>
+            </div>
+            <div class="filters">
+                <button class="filter-btn active">Все книги</button>
+                <button class="filter-btn">Сказки</button>
+                <button class="filter-btn">Приключения</button>
+                <button class="filter-btn">Стихи</button>
+                <button class="filter-btn">Для малышей</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="books-section">
+        <div class="container">
+            <h2 class="section-title">Книги для чтения</h2>
+            <div class="books-grid" id="books-container">
+                <!-- Книги будут добавляться через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="book-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <div class="clearfix">
+                <img src="" alt="Обложка книги" class="modal-book-cover" id="modal-cover">
+                <h2 class="modal-book-title" id="modal-title"></h2>
+                <p class="modal-book-author" id="modal-author"></p>
+            </div>
+            <div class="modal-book-summary" id="modal-summary"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Детская библиотека С. Ремонтное &copy; 2023</p>
+            <p>Все права защищены. Книги предназначены для ознакомления.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Данные о книгах
+        const books = [
+            {
+                id: 1,
+                title: "Аленький цветочек",
+                author: "Сергей Аксаков",
+                cover: "https://via.placeholder.com/250x350/4CAF50/FFFFFF?text=Аленький+цветочек",
+                summary: "Сказка о заколдованном принце и доброй девушке, которая своей любовью разрушила чары. Купец, отправляясь в странствие, пообещал привезти своим дочерям подарки. Младшая попросила аленький цветочек. Найдя цветок в саду чудовища, купец сорвал его, чем разгневал хозяина. Чтобы спасти отца, младшая дочь отправилась к чудовищу, которое оказалось заколдованным принцем.",
+                recommended: true
+            },
+            {
+                id: 2,
+                title: "Конёк-Горбунок",
+                author: "Пётр Ершов",
+                cover: "https://via.placeholder.com/250x350/2196F3/FFFFFF?text=Конёк-Горбунок",
+                summary: "Сказка в стихах о приключениях Ивана-дурака и его верного друга Конька-Горбунка. Иван, младший сын крестьянина, оказывается обладателем двух прекрасных коней и маленького горбатого конька, который становится его верным помощником. Вместе они отправляются в захватывающее путешествие, выполняют поручения царя и в конце концов Иван женится на красавице-царице.",
+                recommended: true
+            },
+            {
+                id: 3,
+                title: "Денискины рассказы",
+                author: "Виктор Драгунский",
+                cover: "https://via.placeholder.com/250x350/FF9800/FFFFFF?text=Денискины+рассказы",
+                summary: "Сборник весёлых рассказов о мальчике Дениске Кораблёве и его друзьях. Дениска — обычный советский школьник, который попадает в забавные и поучительные ситуации. Рассказы написаны с юмором и теплотой, они показывают мир глазами ребёнка, его переживания, радости и открытия.",
+                recommended: false
+            },
+            {
+                id: 4,
+                title: "Мойдодыр",
+                author: "Корней Чуковский",
+                cover: "https://via.placeholder.com/250x350/9C27B0/FFFFFF?text=Мойдодыр",
+                summary: "Стихотворная сказка о мальчике-грязнуле и строгом умывальнике Мойдодыре. От мальчика сбегают все вещи, потому что он не любил умываться и содержать себя в чистоте. Мойдодыр призывает щётки и мыло навести порядок. В конце концов мальчик понимает важность гигиены и становится чистым и аккуратным.",
+                recommended: true
+            },
+            {
+                id: 5,
+                title: "Снежная королева",
+                author: "Ганс Христиан Андерсен",
+                cover: "https://via.placeholder.com/250x350/03A9F4/FFFFFF?text=Снежная+королева",
+                summary: "Волшебная сказка о девочке Герде, которая отправляется на поиски своего друга Кая, похищенного Снежной королевой. По пути Герда встречает разных персонажей, которые помогают ей в её нелёгком путешествии. Только настоящая любовь и преданность Герды способны растопить ледяное сердце Кая и освободить его из плена Снежной королевы.",
+                recommended: true
+            },
+            {
+                id: 6,
+                title: "Золотой ключик",
+                author: "Алексей Толстой",
+                cover: "https://via.placeholder.com/250x350/FF5722/FFFFFF?text=Золотой+ключик",
+                summary: "Сказка о деревянном мальчике Буратино, который ищет золотой ключик. По пути он встречает разных персонажей: Мальвину, Пьеро, Артемона, а также злого Карабаса-Барабаса. В конце концов Буратино находит потайную дверцу, которую открывает золотым ключиком, и за ней оказывается прекрасный кукольный театр.",
+                recommended: false
+            }
+        ];
+
+        // Функция для отображения книг
+        function displayBooks(booksToShow) {
+            const container = document.getElementById('books-container');
+            container.innerHTML = '';
+            
+            booksToShow.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                
+                // Обрезаем описание для карточки
+                const shortSummary = book.summary.length > 150 
+                    ? book.summary.substring(0, 150) + '...' 
+                    : book.summary;
+                
+                bookCard.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}" class="book-cover">
+                    ${book.recommended ? '<div class="recommended-badge">Рекомендуем</div>' : ''}
+                    <div class="book-info">
+                        <h3 class="book-title">${book.title}</h3>
+                        <p class="book-author">${book.author}</p>
+                        <p class="book-summary">${shortSummary}</p>
+                        <a href="#" class="read-more" data-id="${book.id}">Читать далее</a>
+                    </div>
+                `;
+                
+                container.appendChild(bookCard);
+            });
+            
+            // Добавляем обработчики событий для кнопок "Читать далее"
+            document.querySelectorAll('.read-more').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const bookId = parseInt(this.getAttribute('data-id'));
+                    openBookModal(bookId);
+                });
+            });
+        }
+
+        // Функция для открытия модального окна с книгой
+        function openBookModal(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            document.getElementById('modal-cover').src = book.cover;
+            document.getElementById('modal-title').textContent = book.title;
+            document.getElementById('modal-author').textContent = book.author;
+            document.getElementById('modal-summary').textContent = book.summary;
+            
+            document.getElementById('book-modal').style.display = 'flex';
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            document.getElementById('book-modal').style.display = 'none';
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Отображаем все книги
+            displayBooks(books);
+            
+            // Обработчик закрытия модального окна
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            
+            // Закрытие модального окна при клике вне его
+            document.getElementById('book-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+            
+            // Обработчики для фильтров
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Убираем активный класс у всех кнопок
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Добавляем активный класс текущей кнопке
+                    this.classList.add('active');
+                    
+                    // Здесь можно добавить логику фильтрации по категориям
+                    // В этом примере просто показываем все книги
+                    displayBooks(books);
+                });
+            });
+            
+            // Обработчик поиска
+            document.querySelector('.search-button').addEventListener('click', function() {
+                const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+                if (searchTerm.trim() === '') {
+                    displayBooks(books);
+                    return;
+                }
+                
+                const filteredBooks = books.filter(book => 
+                    book.title.toLowerCase().includes(searchTerm) || 
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.summary.toLowerCase().includes(searchTerm)
+                );
+                
+                displayBooks(filteredBooks);
+            });
+            
+            // Поиск при нажатии Enter
+            document.querySelector('.search-input').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    document.querySelector('.search-button').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
