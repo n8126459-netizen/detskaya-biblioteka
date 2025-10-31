@@ -3,167 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Детская библиотека С. Ремонтное</title>
+    <title>Детская библиотека с. Ремонтное | 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --accent: #ff9a76;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #f5f5f5;
-            color: #333;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        .handwriting {
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        /* Header Styles */
         header {
-            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') no-repeat center center;
+            background-size: cover;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(78, 84, 200, 0.7);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+            color: white;
+            width: 100%;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
             padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        /* Books Section */
+        .books-section {
+            padding: 4rem 0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .search-section {
-            background-color: white;
-            padding: 1.5rem 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .search-input {
-            padding: 10px 15px;
-            width: 60%;
-            max-width: 500px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .search-button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .search-button:hover {
-            background-color: #388E3C;
-        }
-
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 15px;
-            background-color: #f0f0f0;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .books-section {
-            padding: 2rem 0;
+            padding: 0 2rem;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 2rem;
-            color: #333;
+            margin-bottom: 3rem;
             position: relative;
         }
 
-        .section-title:after {
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--dark);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-title::after {
             content: '';
             display: block;
             width: 80px;
-            height: 3px;
-            background-color: #4CAF50;
-            margin: 10px auto;
+            height: 4px;
+            background: var(--accent);
+            margin: 15px auto;
+            border-radius: 2px;
         }
 
         .books-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
         }
 
         .book-card {
-            background-color: white;
-            border-radius: 8px;
+            background: white;
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
             position: relative;
         }
 
         .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
         }
 
         .book-cover {
             width: 100%;
             height: 300px;
             object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .book-card:hover .book-cover {
+            transform: scale(1.05);
         }
 
         .book-info {
-            padding: 15px;
+            padding: 20px;
         }
 
         .book-title {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--dark);
         }
 
         .book-author {
-            color: #666;
-            font-size: 0.9rem;
+            color: #6c757d;
             margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        .book-genre {
+            background: #e9ecef;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .book-rating {
+            color: var(--warning);
         }
 
         .book-summary {
-            color: #777;
-            font-size: 0.85rem;
+            color: #6c757d;
+            font-size: 0.9rem;
             margin-bottom: 15px;
             display: -webkit-box;
             -webkit-line-clamp: 3;
@@ -171,38 +346,211 @@
             overflow: hidden;
         }
 
-        .read-more {
-            color: #2196F3;
-            text-decoration: none;
+        .book-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
             font-size: 0.9rem;
-            display: inline-block;
-            margin-top: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
-        .read-more:hover {
-            text-decoration: underline;
-        }
-
-        .recommended-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #FF9800;
+        .btn-read {
+            background: var(--primary);
             color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
         }
 
-        footer {
-            background-color: #333;
-            color: white;
+        .btn-details {
+            background: #e9ecef;
+            color: var(--dark);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--radius);
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
 
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .feature-card p {
+            color: #6c757d;
+        }
+
+        /* Mood Section */
+        .mood-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .mood-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .mood-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .mood-title p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .mood-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: var(--radius);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .mood-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .mood-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .mood-card h3 {
+            font-size: 1.3rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -210,198 +558,521 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
+            background: white;
+            border-radius: var(--radius);
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            animation: modalFadeIn 0.5s ease;
         }
 
         .close-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #777;
+            color: #6c757d;
+            z-index: 10;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-book {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
         }
 
         .modal-book-cover {
-            width: 150px;
-            height: 200px;
+            width: 100%;
+            height: 400px;
             object-fit: cover;
-            float: left;
-            margin-right: 20px;
-            margin-bottom: 15px;
+            border-radius: var(--radius) 0 0 var(--radius);
+        }
+
+        .modal-book-info {
+            padding: 30px;
         }
 
         .modal-book-title {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--dark);
         }
 
         .modal-book-author {
-            color: #666;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .modal-book-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .modal-book-summary {
-            margin-top: 15px;
+            margin-bottom: 25px;
             line-height: 1.7;
         }
 
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
+        .modal-book-details {
+            margin-bottom: 25px;
         }
 
-        @media (max-width: 768px) {
-            .books-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            width: 120px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-            
-            .search-input {
-                width: 70%;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        @media (max-width: 480px) {
-            .books-grid {
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .modal-book {
                 grid-template-columns: 1fr;
             }
             
-            h1 {
+            .modal-book-cover {
+                border-radius: var(--radius) var(--radius) 0 0;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h2 {
                 font-size: 2rem;
             }
             
-            .search-input {
-                width: 100%;
-                margin-bottom: 10px;
+            .section-title h2 {
+                font-size: 2rem;
             }
             
-            .search-container {
+            .book-actions {
                 flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="container">
-            <h1>Детская библиотека С. Ремонтное</h1>
-            <p class="subtitle">Мир сказок и приключений для юных читателей</p>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div class="logo-text">
+                    <h1 class="handwriting">Детская библиотека с. Ремонтное</h1>
+                    <p>Открой мир волшебных историй</p>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <button class="btn btn-outline"><i class="fas fa-user"></i> Войти</button>
+                <button class="btn btn-primary"><i class="fas fa-search"></i> Поиск</button>
+            </div>
         </div>
     </header>
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2 class="handwriting">Добро пожаловать в мир сказок!</h2>
+            <p>Библиотека, где каждая книга - это новое приключение. Откройте для своего ребенка волшебный мир чтения.</p>
+            <button class="btn btn-primary"><i class="fas fa-book"></i> Найти книгу мечты</button>
+        </div>
+    </section>
+
+    <!-- Search Section -->
     <section class="search-section">
-        <div class="container">
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Поиск книг, авторов...">
-                <button class="search-button">Найти</button>
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Поиск книг, авторов, жанров...">
+                <button class="btn btn-primary"><i class="fas fa-search"></i> Найти</button>
             </div>
             <div class="filters">
-                <button class="filter-btn active">Все книги</button>
-                <button class="filter-btn">Сказки</button>
-                <button class="filter-btn">Приключения</button>
-                <button class="filter-btn">Стихи</button>
-                <button class="filter-btn">Для малышей</button>
+                <div class="filter-group">
+                    <div class="filter-label">Жанр</div>
+                    <select class="filter-select">
+                        <option>Все жанры</option>
+                        <option>Сказки</option>
+                        <option>Приключения</option>
+                        <option>Фэнтези</option>
+                        <option>Стихи</option>
+                        <option>Детективы</option>
+                        <option>Научная литература</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">Возраст</div>
+                    <select class="filter-select">
+                        <option>Любой возраст</option>
+                        <option>0-3 года</option>
+                        <option>4-6 лет</option>
+                        <option>7-10 лет</option>
+                        <option>11-14 лет</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">Настроение</div>
+                    <select class="filter-select">
+                        <option>Любое настроение</option>
+                        <option>Веселое</option>
+                        <option>Загадочное</option>
+                        <option>Приключенческое</option>
+                        <option>Спокойное</option>
+                        <option>Вдохновляющее</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">Рекомендации</div>
+                    <select class="filter-select">
+                        <option>Все книги</option>
+                        <option>Только рекомендованные</option>
+                        <option>Новинки</option>
+                        <option>Популярные</option>
+                    </select>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Books Section -->
     <section class="books-section">
         <div class="container">
-            <h2 class="section-title">Книги для чтения</h2>
+            <div class="section-title">
+                <h2 class="handwriting">Наши книги</h2>
+                <p>Более 1000 детских книг для любого возраста и интересов</p>
+            </div>
             <div class="books-grid" id="books-container">
-                <!-- Книги будут добавляться через JavaScript -->
+                <!-- Books will be loaded by JavaScript -->
             </div>
         </div>
     </section>
 
-    <div class="modal" id="book-modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-modal">&times;</span>
-            <div class="clearfix">
-                <img src="" alt="Обложка книги" class="modal-book-cover" id="modal-cover">
-                <h2 class="modal-book-title" id="modal-title"></h2>
-                <p class="modal-book-author" id="modal-author"></p>
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="handwriting">Почему выбирают нас</h2>
+                <p>Мы создали идеальное пространство для юных читателей</p>
             </div>
-            <div class="modal-book-summary" id="modal-summary"></div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h3>Большой выбор</h3>
+                    <p>Более 1000 книг для детей всех возрастов - от малышей до подростков</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Развивающие книги</h3>
+                    <p>Специальные подборки для развития речи, логики и творческого мышления</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Рекомендации</h3>
+                    <p>Помогаем подобрать книги по возрасту, интересам и настроению ребенка</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
+    <!-- Mood Section -->
+    <section class="mood-section">
+        <div class="container">
+            <div class="mood-title">
+                <h2 class="handwriting">Подбери книгу по настроению</h2>
+                <p>Что хочет почитать ваш ребенок сегодня?</p>
+            </div>
+            <div class="mood-grid">
+                <div class="mood-card">
+                    <div class="mood-icon">
+                        <i class="fas fa-laugh-beam"></i>
+                    </div>
+                    <h3>Веселые истории</h3>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-icon">
+                        <i class="fas fa-dragon"></i>
+                    </div>
+                    <h3>Фэнтези и волшебство</h3>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h3>Познавательные</h3>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3>Загадки и детективы</h3>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Добрые сказки</h3>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Приключения</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <p>Детская библиотека С. Ремонтное &copy; 2023</p>
-            <p>Все права защищены. Книги предназначены для ознакомления.</p>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>О библиотеке</h3>
+                    <p>Детская библиотека села Ремонтное - это современное пространство для детей и родителей, где каждый найдет книгу по душе.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Разделы</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Главная</a></li>
+                        <li><a href="#">Каталог книг</a></li>
+                        <li><a href="#">Новинки</a></li>
+                        <li><a href="#">Рекомендации</a></li>
+                        <li><a href="#">Мероприятия</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Помощь</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Как выбрать книгу?</a></li>
+                        <li><a href="#">Частые вопросы</a></li>
+                        <li><a href="#">Правила пользования</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> с. Ремонтное, ул. Центральная, 15</li>
+                        <li><i class="fas fa-phone"></i> +7 (863) 123-45-67</li>
+                        <li><i class="fas fa-envelope"></i> info@detbib-remontnoe.ru</li>
+                        <li><i class="fas fa-clock"></i> Пн-Пт: 9:00-18:00, Сб: 10:00-16:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Детская библиотека с. Ремонтное. Все права защищены.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Book Modal -->
+    <div class="modal" id="book-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <div class="modal-book" id="modal-book-content">
+                <!-- Modal content will be loaded by JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Данные о книгах
+        // Books data
         const books = [
             {
                 id: 1,
                 title: "Аленький цветочек",
                 author: "Сергей Аксаков",
-                cover: "https://via.placeholder.com/250x350/4CAF50/FFFFFF?text=Аленький+цветочек",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
                 summary: "Сказка о заколдованном принце и доброй девушке, которая своей любовью разрушила чары. Купец, отправляясь в странствие, пообещал привезти своим дочерям подарки. Младшая попросила аленький цветочек. Найдя цветок в саду чудовища, купец сорвал его, чем разгневал хозяина. Чтобы спасти отца, младшая дочь отправилась к чудовищу, которое оказалось заколдованным принцем.",
-                recommended: true
+                genre: "Сказки",
+                age: "4-10 лет",
+                rating: 4.8,
+                pages: 48,
+                recommended: true,
+                mood: "Добрые сказки"
             },
             {
                 id: 2,
                 title: "Конёк-Горбунок",
                 author: "Пётр Ершов",
-                cover: "https://via.placeholder.com/250x350/2196F3/FFFFFF?text=Конёк-Горбунок",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
                 summary: "Сказка в стихах о приключениях Ивана-дурака и его верного друга Конька-Горбунка. Иван, младший сын крестьянина, оказывается обладателем двух прекрасных коней и маленького горбатого конька, который становится его верным помощником. Вместе они отправляются в захватывающее путешествие, выполняют поручения царя и в конце концов Иван женится на красавице-царице.",
-                recommended: true
+                genre: "Сказки",
+                age: "6-12 лет",
+                rating: 4.7,
+                pages: 144,
+                recommended: true,
+                mood: "Веселые истории"
             },
             {
                 id: 3,
                 title: "Денискины рассказы",
                 author: "Виктор Драгунский",
-                cover: "https://via.placeholder.com/250x350/FF9800/FFFFFF?text=Денискины+рассказы",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
                 summary: "Сборник весёлых рассказов о мальчике Дениске Кораблёве и его друзьях. Дениска — обычный советский школьник, который попадает в забавные и поучительные ситуации. Рассказы написаны с юмором и теплотой, они показывают мир глазами ребёнка, его переживания, радости и открытия.",
-                recommended: false
+                genre: "Рассказы",
+                age: "7-12 лет",
+                rating: 4.9,
+                pages: 320,
+                recommended: false,
+                mood: "Веселые истории"
             },
             {
                 id: 4,
                 title: "Мойдодыр",
                 author: "Корней Чуковский",
-                cover: "https://via.placeholder.com/250x350/9C27B0/FFFFFF?text=Мойдодыр",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
                 summary: "Стихотворная сказка о мальчике-грязнуле и строгом умывальнике Мойдодыре. От мальчика сбегают все вещи, потому что он не любил умываться и содержать себя в чистоте. Мойдодыр призывает щётки и мыло навести порядок. В конце концов мальчик понимает важность гигиены и становится чистым и аккуратным.",
-                recommended: true
+                genre: "Стихи",
+                age: "2-6 лет",
+                rating: 4.8,
+                pages: 16,
+                recommended: true,
+                mood: "Веселые истории"
             },
             {
                 id: 5,
                 title: "Снежная королева",
                 author: "Ганс Христиан Андерсен",
-                cover: "https://via.placeholder.com/250x350/03A9F4/FFFFFF?text=Снежная+королева",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
                 summary: "Волшебная сказка о девочке Герде, которая отправляется на поиски своего друга Кая, похищенного Снежной королевой. По пути Герда встречает разных персонажей, которые помогают ей в её нелёгком путешествии. Только настоящая любовь и преданность Герды способны растопить ледяное сердце Кая и освободить его из плена Снежной королевы.",
-                recommended: true
+                genre: "Сказки",
+                age: "6-14 лет",
+                rating: 4.9,
+                pages: 64,
+                recommended: true,
+                mood: "Фэнтези и волшебство"
             },
             {
                 id: 6,
                 title: "Золотой ключик",
                 author: "Алексей Толстой",
-                cover: "https://via.placeholder.com/250x350/FF5722/FFFFFF?text=Золотой+ключик",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
                 summary: "Сказка о деревянном мальчике Буратино, который ищет золотой ключик. По пути он встречает разных персонажей: Мальвину, Пьеро, Артемона, а также злого Карабаса-Барабаса. В конце концов Буратино находит потайную дверцу, которую открывает золотым ключиком, и за ней оказывается прекрасный кукольный театр.",
-                recommended: false
+                genre: "Сказки",
+                age: "5-10 лет",
+                rating: 4.7,
+                pages: 128,
+                recommended: false,
+                mood: "Приключения"
+            },
+            {
+                id: 7,
+                title: "Волшебник Изумрудного города",
+                author: "Александр Волков",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                summary: "Девочка Элли из Канзаса попадает в волшебную страну, где её ждут удивительные приключения. Вместе с новыми друзьями - Страшилой, Железным Дровосеком и Трусливым Львом - она отправляется к Великому Гудвину, Волшебнику Изумрудного города, который может исполнить их самые заветные желания.",
+                genre: "Фэнтези",
+                age: "7-12 лет",
+                rating: 4.9,
+                pages: 240,
+                recommended: true,
+                mood: "Фэнтези и волшебство"
+            },
+            {
+                id: 8,
+                title: "Приключения Незнайки",
+                author: "Николай Носов",
+                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                summary: "Веселые истории о коротышках из Цветочного города и их невероятных приключениях. Главный герой - Незнайка, который постоянно попадает в забавные ситуации. Вместе с друзьями он путешествует на воздушном шаре, строит ракету и отправляется в Солнечный город.",
+                genre: "Приключения",
+                age: "6-12 лет",
+                rating: 4.8,
+                pages: 320,
+                recommended: true,
+                mood: "Веселые истории"
             }
         ];
 
-        // Функция для отображения книг
+        // Function to display books
         function displayBooks(booksToShow) {
             const container = document.getElementById('books-container');
             container.innerHTML = '';
@@ -410,27 +1081,46 @@
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
                 
-                // Обрезаем описание для карточки
-                const shortSummary = book.summary.length > 150 
-                    ? book.summary.substring(0, 150) + '...' 
+                // Short summary for card
+                const shortSummary = book.summary.length > 120 
+                    ? book.summary.substring(0, 120) + '...' 
                     : book.summary;
                 
                 bookCard.innerHTML = `
+                    ${book.recommended ? '<div class="book-badge">Рекомендуем</div>' : ''}
                     <img src="${book.cover}" alt="${book.title}" class="book-cover">
-                    ${book.recommended ? '<div class="recommended-badge">Рекомендуем</div>' : ''}
                     <div class="book-info">
                         <h3 class="book-title">${book.title}</h3>
                         <p class="book-author">${book.author}</p>
+                        <div class="book-meta">
+                            <span class="book-genre">${book.genre}</span>
+                            <span class="book-rating"><i class="fas fa-star"></i> ${book.rating}</span>
+                        </div>
                         <p class="book-summary">${shortSummary}</p>
-                        <a href="#" class="read-more" data-id="${book.id}">Читать далее</a>
+                        <div class="book-actions">
+                            <button class="action-btn btn-read read-more" data-id="${book.id}">
+                                <i class="fas fa-book-open"></i> Читать
+                            </button>
+                            <button class="action-btn btn-details book-details" data-id="${book.id}">
+                                <i class="fas fa-info-circle"></i> Подробнее
+                            </button>
+                        </div>
                     </div>
                 `;
                 
                 container.appendChild(bookCard);
             });
             
-            // Добавляем обработчики событий для кнопок "Читать далее"
+            // Add event listeners
             document.querySelectorAll('.read-more').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const bookId = parseInt(this.getAttribute('data-id'));
+                    alert(`Книга "${books.find(b => b.id === bookId).title}" доступна для чтения в библиотеке!`);
+                });
+            });
+            
+            document.querySelectorAll('.book-details').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const bookId = parseInt(this.getAttribute('data-id'));
@@ -439,58 +1129,73 @@
             });
         }
 
-        // Функция для открытия модального окна с книгой
+        // Function to open book modal
         function openBookModal(bookId) {
             const book = books.find(b => b.id === bookId);
             if (!book) return;
             
-            document.getElementById('modal-cover').src = book.cover;
-            document.getElementById('modal-title').textContent = book.title;
-            document.getElementById('modal-author').textContent = book.author;
-            document.getElementById('modal-summary').textContent = book.summary;
+            const modalContent = document.getElementById('modal-book-content');
+            modalContent.innerHTML = `
+                <img src="${book.cover}" alt="${book.title}" class="modal-book-cover">
+                <div class="modal-book-info">
+                    <h2 class="modal-book-title">${book.title}</h2>
+                    <p class="modal-book-author">${book.author}</p>
+                    <div class="modal-book-meta">
+                        <span class="book-genre">${book.genre}</span>
+                        <span class="book-rating"><i class="fas fa-star"></i> ${book.rating}</span>
+                        <span class="book-age">${book.age}</span>
+                    </div>
+                    <div class="modal-book-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Возраст:</span>
+                            <span>${book.age}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Страниц:</span>
+                            <span>${book.pages}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Настроение:</span>
+                            <span>${book.mood}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Рекомендация:</span>
+                            <span>${book.recommended ? 'Да' : 'Нет'}</span>
+                        </div>
+                    </div>
+                    <p class="modal-book-summary">${book.summary}</p>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary"><i class="fas fa-book-open"></i> Забронировать</button>
+                        <button class="btn btn-outline"><i class="fas fa-heart"></i> В избранное</button>
+                    </div>
+                </div>
+            `;
             
             document.getElementById('book-modal').style.display = 'flex';
         }
 
-        // Функция для закрытия модального окна
+        // Function to close modal
         function closeModal() {
             document.getElementById('book-modal').style.display = 'none';
         }
 
-        // Инициализация при загрузке страницы
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Отображаем все книги
+            // Display all books initially
             displayBooks(books);
             
-            // Обработчик закрытия модального окна
+            // Close modal event
             document.getElementById('close-modal').addEventListener('click', closeModal);
             
-            // Закрытие модального окна при клике вне его
+            // Close modal when clicking outside
             document.getElementById('book-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeModal();
                 }
             });
             
-            // Обработчики для фильтров
-            document.querySelectorAll('.filter-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    // Убираем активный класс у всех кнопок
-                    document.querySelectorAll('.filter-btn').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    
-                    // Добавляем активный класс текущей кнопке
-                    this.classList.add('active');
-                    
-                    // Здесь можно добавить логику фильтрации по категориям
-                    // В этом примере просто показываем все книги
-                    displayBooks(books);
-                });
-            });
-            
-            // Обработчик поиска
-            document.querySelector('.search-button').addEventListener('click', function() {
+            // Search functionality
+            document.querySelector('.search-box .btn').addEventListener('click', function() {
                 const searchTerm = document.querySelector('.search-input').value.toLowerCase();
                 if (searchTerm.trim() === '') {
                     displayBooks(books);
@@ -500,17 +1205,36 @@
                 const filteredBooks = books.filter(book => 
                     book.title.toLowerCase().includes(searchTerm) || 
                     book.author.toLowerCase().includes(searchTerm) ||
+                    book.genre.toLowerCase().includes(searchTerm) ||
                     book.summary.toLowerCase().includes(searchTerm)
                 );
                 
                 displayBooks(filteredBooks);
             });
             
-            // Поиск при нажатии Enter
+            // Search on Enter key
             document.querySelector('.search-input').addEventListener('keyup', function(e) {
                 if (e.key === 'Enter') {
-                    document.querySelector('.search-button').click();
+                    document.querySelector('.search-box .btn').click();
                 }
+            });
+            
+            // Filter functionality
+            document.querySelectorAll('.filter-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    // In a real app, this would filter books based on all selected filters
+                    // For this demo, we'll just show all books
+                    displayBooks(books);
+                });
+            });
+            
+            // Mood cards functionality
+            document.querySelectorAll('.mood-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const mood = this.querySelector('h3').textContent;
+                    alert(`Показать книги для настроения: ${mood}`);
+                    // In a real app, this would filter books by mood
+                });
             });
         });
     </script>
