@@ -39,7 +39,6 @@
             font-family: 'Patrick Hand', cursive;
         }
 
-        /* Header Styles */
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -112,10 +111,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* Hero Section */
         .hero {
-            background: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') no-repeat center center;
-            background-size: cover;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             height: 500px;
             display: flex;
             align-items: center;
@@ -155,7 +152,6 @@
             animation: fadeInUp 1s ease 0.3s both;
         }
 
-        /* Search Section */
         .search-section {
             background: white;
             padding: 2rem 0;
@@ -219,7 +215,6 @@
             outline: none;
         }
 
-        /* Books Section */
         .books-section {
             padding: 4rem 0;
         }
@@ -375,7 +370,6 @@
             color: var(--dark);
         }
 
-        /* Features Section */
         .features {
             padding: 4rem 0;
             background: white;
@@ -416,7 +410,6 @@
             color: #6c757d;
         }
 
-        /* Mood Section */
         .mood-section {
             padding: 4rem 0;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -469,7 +462,6 @@
             font-size: 1.3rem;
         }
 
-        /* Footer */
         footer {
             background: var(--dark);
             color: white;
@@ -550,7 +542,6 @@
             font-size: 0.9rem;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -654,7 +645,40 @@
             gap: 15px;
         }
 
-        /* Animations */
+        .placeholder-cover {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .modal-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .no-books {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -682,7 +706,6 @@
             }
         }
 
-        /* Responsive */
         @media (max-width: 992px) {
             .modal-book {
                 grid-template-columns: 1fr;
@@ -729,7 +752,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="header-content">
             <div class="logo">
@@ -742,89 +764,84 @@
                 </div>
             </div>
             <div class="header-buttons">
-                <button class="btn btn-outline"><i class="fas fa-user"></i> Войти</button>
-                <button class="btn btn-primary"><i class="fas fa-search"></i> Поиск</button>
+                <button class="btn btn-outline" onclick="showLogin()"><i class="fas fa-user"></i> Войти</button>
+                <button class="btn btn-primary" onclick="focusSearch()"><i class="fas fa-search"></i> Поиск</button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h2 class="handwriting">Добро пожаловать в мир сказок!</h2>
-            <p>Библиотека, где каждая книга - это новое приключение. Откройте для своего ребенка волшебный мир чтения.</p>
-            <button class="btn btn-primary"><i class="fas fa-book"></i> Найти книгу мечты</button>
+            <h2 class="handwriting">Добро пожаловать в мир увлекательных историй!</h2>
+            <p>Библиотека, где каждая книга - это новое приключение.</p>
+            <button class="btn btn-primary" onclick="scrollToBooks()"><i class="fas fa-book"></i> Найти книгу мечты</button>
         </div>
     </section>
 
-    <!-- Search Section -->
     <section class="search-section">
         <div class="search-container">
             <div class="search-box">
-                <input type="text" class="search-input" placeholder="Поиск книг, авторов, жанров...">
-                <button class="btn btn-primary"><i class="fas fa-search"></i> Найти</button>
+                <input type="text" class="search-input" id="search-input" placeholder="Поиск книг, авторов, жанров...">
+                <button class="btn btn-primary" id="search-button"><i class="fas fa-search"></i> Найти</button>
             </div>
             <div class="filters">
                 <div class="filter-group">
                     <div class="filter-label">Жанр</div>
-                    <select class="filter-select">
-                        <option>Все жанры</option>
-                        <option>Сказки</option>
-                        <option>Приключения</option>
-                        <option>Фэнтези</option>
-                        <option>Стихи</option>
-                        <option>Детективы</option>
-                        <option>Научная литература</option>
+                    <select class="filter-select" id="genre-filter">
+                        <option value="all">Все жанры</option>
+                        <option value="Сказки">Сказки</option>
+                        <option value="Приключения">Приключения</option>
+                        <option value="Фэнтези">Фэнтези</option>
+                        <option value="Стихи">Стихи</option>
+                        <option value="Детективы">Детективы</option>
+                        <option value="Научная литература">Научная литература</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <div class="filter-label">Возраст</div>
-                    <select class="filter-select">
-                        <option>Любой возраст</option>
-                        <option>0-3 года</option>
-                        <option>4-6 лет</option>
-                        <option>7-10 лет</option>
-                        <option>11-14 лет</option>
+                    <select class="filter-select" id="age-filter">
+                        <option value="all">Любой возраст</option>
+                        <option value="0-3">0-3 года</option>
+                        <option value="4-6">4-6 лет</option>
+                        <option value="7-10">7-10 лет</option>
+                        <option value="11-14">11-14 лет</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <div class="filter-label">Настроение</div>
-                    <select class="filter-select">
-                        <option>Любое настроение</option>
-                        <option>Веселое</option>
-                        <option>Загадочное</option>
-                        <option>Приключенческое</option>
-                        <option>Спокойное</option>
-                        <option>Вдохновляющее</option>
+                    <select class="filter-select" id="mood-filter">
+                        <option value="all">Любое настроение</option>
+                        <option value="Веселое">Веселое</option>
+                        <option value="Загадочное">Загадочное</option>
+                        <option value="Приключенческое">Приключенческое</option>
+                        <option value="Спокойное">Спокойное</option>
+                        <option value="Вдохновляющее">Вдохновляющее</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <div class="filter-label">Рекомендации</div>
-                    <select class="filter-select">
-                        <option>Все книги</option>
-                        <option>Только рекомендованные</option>
-                        <option>Новинки</option>
-                        <option>Популярные</option>
+                    <select class="filter-select" id="recommendation-filter">
+                        <option value="all">Все книги</option>
+                        <option value="recommended">Только рекомендованные</option>
+                        <option value="new">Новинки</option>
+                        <option value="popular">Популярные</option>
                     </select>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Books Section -->
-    <section class="books-section">
+    <section class="books-section" id="books-section">
         <div class="container">
             <div class="section-title">
                 <h2 class="handwriting">Наши книги</h2>
                 <p>Более 1000 детских книг для любого возраста и интересов</p>
             </div>
             <div class="books-grid" id="books-container">
-                <!-- Books will be loaded by JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="features">
         <div class="container">
             <div class="section-title">
@@ -857,7 +874,6 @@
         </div>
     </section>
 
-    <!-- Mood Section -->
     <section class="mood-section">
         <div class="container">
             <div class="mood-title">
@@ -865,37 +881,37 @@
                 <p>Что хочет почитать ваш ребенок сегодня?</p>
             </div>
             <div class="mood-grid">
-                <div class="mood-card">
+                <div class="mood-card" data-mood="Веселое">
                     <div class="mood-icon">
                         <i class="fas fa-laugh-beam"></i>
                     </div>
                     <h3>Веселые истории</h3>
                 </div>
-                <div class="mood-card">
+                <div class="mood-card" data-mood="Фэнтези">
                     <div class="mood-icon">
                         <i class="fas fa-dragon"></i>
                     </div>
                     <h3>Фэнтези и волшебство</h3>
                 </div>
-                <div class="mood-card">
+                <div class="mood-card" data-mood="Познавательное">
                     <div class="mood-icon">
                         <i class="fas fa-microscope"></i>
                     </div>
                     <h3>Познавательные</h3>
                 </div>
-                <div class="mood-card">
+                <div class="mood-card" data-mood="Загадочное">
                     <div class="mood-icon">
                         <i class="fas fa-user-secret"></i>
                     </div>
                     <h3>Загадки и детективы</h3>
                 </div>
-                <div class="mood-card">
+                <div class="mood-card" data-mood="Доброе">
                     <div class="mood-icon">
                         <i class="fas fa-heart"></i>
                     </div>
                     <h3>Добрые сказки</h3>
                 </div>
-                <div class="mood-card">
+                <div class="mood-card" data-mood="Приключенческое">
                     <div class="mood-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
@@ -905,7 +921,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -921,29 +936,29 @@
                 <div class="footer-column">
                     <h3>Разделы</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Главная</a></li>
-                        <li><a href="#">Каталог книг</a></li>
-                        <li><a href="#">Новинки</a></li>
-                        <li><a href="#">Рекомендации</a></li>
-                        <li><a href="#">Мероприятия</a></li>
+                        <li><a href="#" onclick="scrollToTop()">Главная</a></li>
+                        <li><a href="#" onclick="scrollToBooks()">Каталог книг</a></li>
+                        <li><a href="#" onclick="showNewBooks()">Новинки</a></li>
+                        <li><a href="#" onclick="showRecommended()">Рекомендации</a></li>
+                        <li><a href="#" onclick="showEvents()">Мероприятия</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Помощь</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Как выбрать книгу?</a></li>
-                        <li><a href="#">Частые вопросы</a></li>
-                        <li><a href="#">Правила пользования</a></li>
-                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#" onclick="showHelp()">Как выбрать книгу?</a></li>
+                        <li><a href="#" onclick="showFAQ()">Частые вопросы</a></li>
+                        <li><a href="#" onclick="showRules()">Правила пользования</a></li>
+                        <li><a href="#" onclick="showContacts()">Контакты</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Контакты</h3>
                     <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> с. Ремонтное, ул. Центральная, 15</li>
-                        <li><i class="fas fa-phone"></i> +7 (863) 123-45-67</li>
-                        <li><i class="fas fa-envelope"></i> info@detbib-remontnoe.ru</li>
-                        <li><i class="fas fa-clock"></i> Пн-Пт: 9:00-18:00, Сб: 10:00-16:00</li>
+                        <li><i class="fas fa-map-marker-alt"></i> с. Ремонтное, ул. Дзержинского, 21</li>
+                        <li><i class="fas fa-phone"></i> +7 (863) 793-12-07</li>
+                        <li><i class="fas fa-envelope"></i> remdlib@mail.ru</li>
+                        <li><i class="fas fa-clock"></i> Пн-Чт: 9:00-17:15, Пт: 9:00-17:00, Вс: 09:00-16:00, Последняя пятница месяца - санитарный день.</li>
                     </ul>
                 </div>
             </div>
@@ -953,142 +968,156 @@
         </div>
     </footer>
 
-    <!-- Book Modal -->
     <div class="modal" id="book-modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">&times;</span>
             <div class="modal-book" id="modal-book-content">
-                <!-- Modal content will be loaded by JavaScript -->
             </div>
         </div>
     </div>
 
     <script>
-        // Books data
         const books = [
             {
                 id: 1,
                 title: "Аленький цветочек",
                 author: "Сергей Аксаков",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/4e54c8/white?text=Аленький+цветочек",
                 summary: "Сказка о заколдованном принце и доброй девушке, которая своей любовью разрушила чары. Купец, отправляясь в странствие, пообещал привезти своим дочерям подарки. Младшая попросила аленький цветочек. Найдя цветок в саду чудовища, купец сорвал его, чем разгневал хозяина. Чтобы спасти отца, младшая дочь отправилась к чудовищу, которое оказалось заколдованным принцем.",
                 genre: "Сказки",
                 age: "4-10 лет",
                 rating: 4.8,
                 pages: 48,
                 recommended: true,
-                mood: "Добрые сказки"
+                mood: "Доброе",
+                isNew: false
             },
             {
                 id: 2,
                 title: "Конёк-Горбунок",
                 author: "Пётр Ершов",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Конёк-Горбунок",
                 summary: "Сказка в стихах о приключениях Ивана-дурака и его верного друга Конька-Горбунка. Иван, младший сын крестьянина, оказывается обладателем двух прекрасных коней и маленького горбатого конька, который становится его верным помощником. Вместе они отправляются в захватывающее путешествие, выполняют поручения царя и в конце концов Иван женится на красавице-царице.",
                 genre: "Сказки",
                 age: "6-12 лет",
                 rating: 4.7,
                 pages: 144,
                 recommended: true,
-                mood: "Веселые истории"
+                mood: "Веселое",
+                isNew: true
             },
             {
                 id: 3,
                 title: "Денискины рассказы",
                 author: "Виктор Драгунский",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/FF9800/white?text=Денискины+рассказы",
                 summary: "Сборник весёлых рассказов о мальчике Дениске Кораблёве и его друзьях. Дениска — обычный советский школьник, который попадает в забавные и поучительные ситуации. Рассказы написаны с юмором и теплотой, они показывают мир глазами ребёнка, его переживания, радости и открытия.",
                 genre: "Рассказы",
                 age: "7-12 лет",
                 rating: 4.9,
                 pages: 320,
                 recommended: false,
-                mood: "Веселые истории"
+                mood: "Веселое",
+                isNew: false
             },
             {
                 id: 4,
                 title: "Мойдодыр",
                 author: "Корней Чуковский",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Мойдодыр",
                 summary: "Стихотворная сказка о мальчике-грязнуле и строгом умывальнике Мойдодыре. От мальчика сбегают все вещи, потому что он не любил умываться и содержать себя в чистоте. Мойдодыр призывает щётки и мыло навести порядок. В конце концов мальчик понимает важность гигиены и становится чистым и аккуратным.",
                 genre: "Стихи",
                 age: "2-6 лет",
                 rating: 4.8,
                 pages: 16,
                 recommended: true,
-                mood: "Веселые истории"
+                mood: "Веселое",
+                isNew: true
             },
             {
                 id: 5,
                 title: "Снежная королева",
                 author: "Ганс Христиан Андерсен",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/03A9F4/white?text=Снежная+королева",
                 summary: "Волшебная сказка о девочке Герде, которая отправляется на поиски своего друга Кая, похищенного Снежной королевой. По пути Герда встречает разных персонажей, которые помогают ей в её нелёгком путешествии. Только настоящая любовь и преданность Герды способны растопить ледяное сердце Кая и освободить его из плена Снежной королевы.",
                 genre: "Сказки",
                 age: "6-14 лет",
                 rating: 4.9,
                 pages: 64,
                 recommended: true,
-                mood: "Фэнтези и волшебство"
+                mood: "Фэнтези",
+                isNew: false
             },
             {
                 id: 6,
                 title: "Золотой ключик",
                 author: "Алексей Толстой",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/FF5722/white?text=Золотой+ключик",
                 summary: "Сказка о деревянном мальчике Буратино, который ищет золотой ключик. По пути он встречает разных персонажей: Мальвину, Пьеро, Артемона, а также злого Карабаса-Барабаса. В конце концов Буратино находит потайную дверцу, которую открывает золотым ключиком, и за ней оказывается прекрасный кукольный театр.",
                 genre: "Сказки",
                 age: "5-10 лет",
                 rating: 4.7,
                 pages: 128,
                 recommended: false,
-                mood: "Приключения"
+                mood: "Приключенческое",
+                isNew: false
             },
             {
                 id: 7,
                 title: "Волшебник Изумрудного города",
                 author: "Александр Волков",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Волшебник+Изумрудного+города",
                 summary: "Девочка Элли из Канзаса попадает в волшебную страну, где её ждут удивительные приключения. Вместе с новыми друзьями - Страшилой, Железным Дровосеком и Трусливым Львом - она отправляется к Великому Гудвину, Волшебнику Изумрудного города, который может исполнить их самые заветные желания.",
                 genre: "Фэнтези",
                 age: "7-12 лет",
                 rating: 4.9,
                 pages: 240,
                 recommended: true,
-                mood: "Фэнтези и волшебство"
+                mood: "Фэнтези",
+                isNew: true
             },
             {
                 id: 8,
                 title: "Приключения Незнайки",
                 author: "Николай Носов",
-                cover: "https://cdn.ast.ru/v2/ASE000000000737852/COVER/cover1__w600.jpg",
+                cover: "https://placehold.co/600x400/E91E63/white?text=Приключения+Незнайки",
                 summary: "Веселые истории о коротышках из Цветочного города и их невероятных приключениях. Главный герой - Незнайка, который постоянно попадает в забавные ситуации. Вместе с друзьями он путешествует на воздушном шаре, строит ракету и отправляется в Солнечный город.",
                 genre: "Приключения",
                 age: "6-12 лет",
                 rating: 4.8,
                 pages: 320,
                 recommended: true,
-                mood: "Веселые истории"
+                mood: "Веселое",
+                isNew: false
             }
         ];
 
-        // Function to display books
         function displayBooks(booksToShow) {
             const container = document.getElementById('books-container');
             container.innerHTML = '';
+            
+            if (booksToShow.length === 0) {
+                container.innerHTML = '<div class="no-books">Книги по вашему запросу не найдены</div>';
+                return;
+            }
             
             booksToShow.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
                 
-                // Short summary for card
                 const shortSummary = book.summary.length > 120 
                     ? book.summary.substring(0, 120) + '...' 
                     : book.summary;
                 
+                const badges = [];
+                if (book.recommended) badges.push('Рекомендуем');
+                if (book.isNew) badges.push('Новинка');
+                
                 bookCard.innerHTML = `
-                    ${book.recommended ? '<div class="book-badge">Рекомендуем</div>' : ''}
-                    <img src="${book.cover}" alt="${book.title}" class="book-cover">
+                    ${badges.map(badge => `<div class="book-badge">${badge}</div>`).join('')}
+                    <div class="placeholder-cover">
+                        ${book.title}
+                    </div>
                     <div class="book-info">
                         <h3 class="book-title">${book.title}</h3>
                         <p class="book-author">${book.author}</p>
@@ -1098,10 +1127,10 @@
                         </div>
                         <p class="book-summary">${shortSummary}</p>
                         <div class="book-actions">
-                            <button class="action-btn btn-read read-more" data-id="${book.id}">
+                            <button class="action-btn btn-read" onclick="readBook(${book.id})">
                                 <i class="fas fa-book-open"></i> Читать
                             </button>
-                            <button class="action-btn btn-details book-details" data-id="${book.id}">
+                            <button class="action-btn btn-details" onclick="openBookModal(${book.id})">
                                 <i class="fas fa-info-circle"></i> Подробнее
                             </button>
                         </div>
@@ -1110,33 +1139,17 @@
                 
                 container.appendChild(bookCard);
             });
-            
-            // Add event listeners
-            document.querySelectorAll('.read-more').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const bookId = parseInt(this.getAttribute('data-id'));
-                    alert(`Книга "${books.find(b => b.id === bookId).title}" доступна для чтения в библиотеке!`);
-                });
-            });
-            
-            document.querySelectorAll('.book-details').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const bookId = parseInt(this.getAttribute('data-id'));
-                    openBookModal(bookId);
-                });
-            });
         }
 
-        // Function to open book modal
         function openBookModal(bookId) {
             const book = books.find(b => b.id === bookId);
             if (!book) return;
             
             const modalContent = document.getElementById('modal-book-content');
             modalContent.innerHTML = `
-                <img src="${book.cover}" alt="${book.title}" class="modal-book-cover">
+                <div class="modal-placeholder">
+                    ${book.title}
+                </div>
                 <div class="modal-book-info">
                     <h2 class="modal-book-title">${book.title}</h2>
                     <p class="modal-book-author">${book.author}</p>
@@ -1165,8 +1178,8 @@
                     </div>
                     <p class="modal-book-summary">${book.summary}</p>
                     <div class="modal-actions">
-                        <button class="btn btn-primary"><i class="fas fa-book-open"></i> Забронировать</button>
-                        <button class="btn btn-outline"><i class="fas fa-heart"></i> В избранное</button>
+                        <button class="btn btn-primary" onclick="reserveBook(${book.id})"><i class="fas fa-book-open"></i> Забронировать</button>
+                        <button class="btn btn-outline" onclick="addToFavorites(${book.id})"><i class="fas fa-heart"></i> В избранное</button>
                     </div>
                 </div>
             `;
@@ -1174,66 +1187,141 @@
             document.getElementById('book-modal').style.display = 'flex';
         }
 
-        // Function to close modal
         function closeModal() {
             document.getElementById('book-modal').style.display = 'none';
         }
 
-        // Initialize when page loads
+        function readBook(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                alert(`Книга "${book.title}" доступна для чтения в библиотеке! Приходите к нам по адресу: с. Ремонтное, ул. Дзержинского, 21`);
+            }
+        }
+
+        function reserveBook(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                alert(`Книга "${book.title}" забронирована! Мы сохраним её для вас до конца недели.`);
+            }
+        }
+
+        function addToFavorites(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                alert(`Книга "${book.title}" добавлена в избранное!`);
+            }
+        }
+
+        function searchBooks() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const genreFilter = document.getElementById('genre-filter').value;
+            const ageFilter = document.getElementById('age-filter').value;
+            const moodFilter = document.getElementById('mood-filter').value;
+            const recommendationFilter = document.getElementById('recommendation-filter').value;
+            
+            let filteredBooks = books.filter(book => {
+                const matchesSearch = !searchTerm || 
+                    book.title.toLowerCase().includes(searchTerm) || 
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.genre.toLowerCase().includes(searchTerm) ||
+                    book.summary.toLowerCase().includes(searchTerm);
+                
+                const matchesGenre = genreFilter === 'all' || book.genre === genreFilter;
+                const matchesAge = ageFilter === 'all' || book.age.includes(ageFilter);
+                const matchesMood = moodFilter === 'all' || book.mood === moodFilter;
+                
+                let matchesRecommendation = true;
+                if (recommendationFilter === 'recommended') {
+                    matchesRecommendation = book.recommended;
+                } else if (recommendationFilter === 'new') {
+                    matchesRecommendation = book.isNew;
+                } else if (recommendationFilter === 'popular') {
+                    matchesRecommendation = book.rating >= 4.5;
+                }
+                
+                return matchesSearch && matchesGenre && matchesAge && matchesMood && matchesRecommendation;
+            });
+            
+            displayBooks(filteredBooks);
+        }
+
+        function scrollToBooks() {
+            document.getElementById('books-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function focusSearch() {
+            document.getElementById('search-input').focus();
+        }
+        
+        function showLogin() {
+            alert('Функция входа будет доступна в ближайшее время');
+        }
+        
+        function showNewBooks() {
+            document.getElementById('recommendation-filter').value = 'new';
+            searchBooks();
+            scrollToBooks();
+        }
+        
+        function showRecommended() {
+            document.getElementById('recommendation-filter').value = 'recommended';
+            searchBooks();
+            scrollToBooks();
+        }
+        
+        function showEvents() {
+            alert('Информация о мероприятиях будет доступна в ближайшее время');
+        }
+        
+        function showHelp() {
+            alert('Наши библиотекари помогут подобрать книги по возрасту и интересам.');
+        }
+        
+        function showFAQ() {
+            alert('Часто задаваемые вопросы будут доступны в ближайшее время');
+        }
+        
+        function showRules() {
+            alert('Правила пользования библиотекой:\n1. Книги выдаются на 10 дней\n2. Возможно продление по телефону\n3. Бережное обращение с книгами обязательно');
+        }
+        
+        function showContacts() {
+            alert('Наши контакты:\nс. Ремонтное, ул. Дзержинского, 21\nТелефон: +7 (863) 793-12-07\nEmail: remdlib@mail.ru');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Display all books initially
             displayBooks(books);
             
-            // Close modal event
             document.getElementById('close-modal').addEventListener('click', closeModal);
             
-            // Close modal when clicking outside
             document.getElementById('book-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeModal();
                 }
             });
             
-            // Search functionality
-            document.querySelector('.search-box .btn').addEventListener('click', function() {
-                const searchTerm = document.querySelector('.search-input').value.toLowerCase();
-                if (searchTerm.trim() === '') {
-                    displayBooks(books);
-                    return;
-                }
-                
-                const filteredBooks = books.filter(book => 
-                    book.title.toLowerCase().includes(searchTerm) || 
-                    book.author.toLowerCase().includes(searchTerm) ||
-                    book.genre.toLowerCase().includes(searchTerm) ||
-                    book.summary.toLowerCase().includes(searchTerm)
-                );
-                
-                displayBooks(filteredBooks);
-            });
+            document.getElementById('search-button').addEventListener('click', searchBooks);
             
-            // Search on Enter key
-            document.querySelector('.search-input').addEventListener('keyup', function(e) {
+            document.getElementById('search-input').addEventListener('keyup', function(e) {
                 if (e.key === 'Enter') {
-                    document.querySelector('.search-box .btn').click();
+                    searchBooks();
                 }
             });
             
-            // Filter functionality
             document.querySelectorAll('.filter-select').forEach(select => {
-                select.addEventListener('change', function() {
-                    // In a real app, this would filter books based on all selected filters
-                    // For this demo, we'll just show all books
-                    displayBooks(books);
-                });
+                select.addEventListener('change', searchBooks);
             });
             
-            // Mood cards functionality
             document.querySelectorAll('.mood-card').forEach(card => {
                 card.addEventListener('click', function() {
-                    const mood = this.querySelector('h3').textContent;
-                    alert(`Показать книги для настроения: ${mood}`);
-                    // In a real app, this would filter books by mood
+                    const mood = this.getAttribute('data-mood');
+                    document.getElementById('mood-filter').value = mood;
+                    searchBooks();
+                    scrollToBooks();
                 });
             });
         });
