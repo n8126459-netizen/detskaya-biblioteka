@@ -287,6 +287,11 @@
             z-index: 2;
         }
 
+        .book-badge.new {
+            top: 50px;
+            background: #4CAF50;
+        }
+
         .book-cover {
             width: 100%;
             height: 300px;
@@ -433,19 +438,6 @@
             align-items: center;
             gap: 30px;
             text-align: center;
-        }
-
-        .qr-code {
-            width: 200px;
-            height: 200px;
-            background: #f8f9fa;
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            color: var(--dark);
-            box-shadow: var(--shadow);
         }
 
         footer {
@@ -715,6 +707,37 @@
             justify-content: flex-end;
         }
 
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -805,7 +828,7 @@
             </div>
             <div class="header-buttons">
                 <button class="btn btn-outline" onclick="showLogin()"><i class="fas fa-user"></i> Войти</button>
-                <button class="btn btn-primary" onclick="toggleAdminPanel()"><i class="fas fa-cog"></i> Админка</button>
+                <button class="btn btn-primary" onclick="showAdminLogin()"><i class="fas fa-cog"></i> Админка</button>
             </div>
         </div>
     </header>
@@ -938,7 +961,7 @@
                 <div class="form-group">
                     <label>
                         <input type="checkbox" id="admin-new">
-                        Новинка
+                        New
                     </label>
                 </div>
             </div>
@@ -1003,10 +1026,6 @@
                 <p>Помогите нам стать лучше - оставьте отзыв о качестве обслуживания</p>
             </div>
             <div class="feedback-content">
-                <div class="qr-code">
-                    <div>QR-код для оценки</div>
-                </div>
-                <p>Отсканируйте QR-код, чтобы перейти к форме оценки качества нашей работы</p>
                 <a href="https://forms.mkrf.ru/e/2579/xTPLeBU7/?ap_orgcode=760220999" target="_blank" class="btn btn-primary">
                     <i class="fas fa-star"></i> Оценить качество работы
                 </a>
@@ -1017,14 +1036,6 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
-                    <h3>О библиотеке</h3>
-                    <p>Детская библиотека села Ремонтное - это современное пространство для детей и родителей, где каждый найдет книгу по душе.</p>
-                    <div class="social-links">
-                        <a href="https://vk.com/public204592757" class="social-link" target="_blank"><i class="fab fa-vk"></i></a>
-                        <a href="https://ok.ru/profile/586711958636" class="social-link" target="_blank"><i class="fab fa-odnoklassniki"></i></a>
-                    </div>
-                </div>
                 <div class="footer-column">
                     <h3>Разделы</h3>
                     <ul class="footer-links">
@@ -1053,6 +1064,10 @@
                         <li><i class="fas fa-clock"></i> Пн-Чт: 9:00-17:15, Пт: 9:00-17:00, Вс: 09:00-16:00</li>
                         <li>Последняя пятница месяца - санитарный день</li>
                     </ul>
+                    <div class="social-links">
+                        <a href="https://vk.com/public204592757" class="social-link" target="_blank"><i class="fab fa-vk"></i></a>
+                        <a href="https://ok.ru/profile/586711958636" class="social-link" target="_blank"><i class="fab fa-odnoklassniki"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="copyright">
@@ -1069,7 +1084,20 @@
         </div>
     </div>
 
+    <div class="login-modal" id="admin-login-modal">
+        <div class="login-content">
+            <h2>Вход в панель администратора</h2>
+            <p>Введите пароль для доступа</p>
+            <input type="password" class="login-input" id="admin-password" placeholder="Пароль">
+            <button class="btn btn-primary" onclick="checkAdminPassword()" style="width: 100%; margin-top: 15px;">Войти</button>
+            <button class="btn btn-outline" onclick="closeAdminLogin()" style="width: 100%; margin-top: 10px;">Отмена</button>
+        </div>
+    </div>
+
     <script>
+        // Пароль для доступа к админке (можно изменить)
+        const ADMIN_PASSWORD = "admin123";
+        
         let books = JSON.parse(localStorage.getItem('libraryBooks')) || [
             {
                 id: 1,
@@ -1126,6 +1154,650 @@
                 recommended: true,
                 mood: "Веселое",
                 isNew: true
+            },
+            {
+                id: 5,
+                title: "Снежная королева",
+                author: "Ганс Христиан Андерсен",
+                cover: "https://placehold.co/600x400/03A9F4/white?text=Снежная+королева",
+                summary: "Волшебная сказка о девочке Герде, которая отправляется на поиски своего друга Кая, похищенного Снежной королевой. По пути Герда встречает разных персонажей, которые помогают ей в её нелёгком путешествии. Только настоящая любовь и преданность Герды способны растопить ледяное сердце Кая и освободить его из плена Снежной королевы.",
+                genre: "Сказки",
+                age: "6-14 лет",
+                rating: 4.9,
+                pages: 64,
+                recommended: true,
+                mood: "Фэнтези",
+                isNew: false
+            },
+            {
+                id: 6,
+                title: "Золотой ключик",
+                author: "Алексей Толстой",
+                cover: "https://placehold.co/600x400/FF5722/white?text=Золотой+ключик",
+                summary: "Сказка о деревянном мальчике Буратино, который ищет золотой ключик. По пути он встречает разных персонажей: Мальвину, Пьеро, Артемона, а также злого Карабаса-Барабаса. В конце концов Буратино находит потайную дверцу, которую открывает золотым ключиком, и за ней оказывается прекрасный кукольный театр.",
+                genre: "Сказки",
+                age: "5-10 лет",
+                rating: 4.7,
+                pages: 128,
+                recommended: false,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 7,
+                title: "Волшебник Изумрудного города",
+                author: "Александр Волков",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Волшебник+Изумрудного+города",
+                summary: "Девочка Элли из Канзаса попадает в волшебную страну, где её ждут удивительные приключения. Вместе с новыми друзьями - Страшилой, Железным Дровосеком и Трусливым Львом - она отправляется к Великому Гудвину, Волшебнику Изумрудного города, который может исполнить их самые заветные желания.",
+                genre: "Фэнтези",
+                age: "7-12 лет",
+                rating: 4.9,
+                pages: 240,
+                recommended: true,
+                mood: "Фэнтези",
+                isNew: true
+            },
+            {
+                id: 8,
+                title: "Приключения Незнайки",
+                author: "Николай Носов",
+                cover: "https://placehold.co/600x400/E91E63/white?text=Приключения+Незнайки",
+                summary: "Веселые истории о коротышках из Цветочного города и их невероятных приключениях. Главный герой - Незнайка, который постоянно попадает в забавные ситуации. Вместе с друзьями он путешествует на воздушном шаре, строит ракету и отправляется в Солнечный город.",
+                genre: "Приключения",
+                age: "6-12 лет",
+                rating: 4.8,
+                pages: 320,
+                recommended: true,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 9,
+                title: "Маленький принц",
+                author: "Антуан де Сент-Экзюпери",
+                cover: "https://placehold.co/600x400/FF9800/white?text=Маленький+принц",
+                summary: "Философская сказка о мальчике с другой планеты, который путешествует по вселенной и встречает разных персонажей. Каждая встреча учит его чему-то важному о жизни, дружбе и любви.",
+                genre: "Фэнтези",
+                age: "8-14 лет",
+                rating: 4.9,
+                pages: 96,
+                recommended: true,
+                mood: "Вдохновляющее",
+                isNew: false
+            },
+            {
+                id: 10,
+                title: "Кот в сапогах",
+                author: "Шарль Перро",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Кот+в+сапогах",
+                summary: "Сказка о хитром коте, который помогает своему хозяину разбогатеть и жениться на принцессе. Кот своими уловками и смекалкой побеждает великана и завоевывает уважение короля.",
+                genre: "Сказки",
+                age: "4-8 лет",
+                rating: 4.6,
+                pages: 32,
+                recommended: true,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 11,
+                title: "Дюймовочка",
+                author: "Ганс Христиан Андерсен",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Дюймовочка",
+                summary: "Сказка о крошечной девочке, появившейся из цветка, и ее удивительных приключениях. Дюймовочка встречает разных существ и в конце находит свое счастье среди эльфов.",
+                genre: "Сказки",
+                age: "4-10 лет",
+                rating: 4.7,
+                pages: 40,
+                recommended: true,
+                mood: "Доброе",
+                isNew: true
+            },
+            {
+                id: 12,
+                title: "Бременские музыканты",
+                author: "Братья Гримм",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Бременские+музыканты",
+                summary: "История о животных - осле, собаке, коте и петухе, которые отправляются в Бремен, чтобы стать городскими музыкантами. По пути они перехитряют разбойников и находят новый дом.",
+                genre: "Сказки",
+                age: "4-8 лет",
+                rating: 4.5,
+                pages: 24,
+                recommended: false,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 13,
+                title: "Золушка",
+                author: "Шарль Перро",
+                cover: "https://placehold.co/600x400/FF5722/white?text=Золушка",
+                summary: "Классическая сказка о доброй и трудолюбивой девушке, которая с помощью феи-крестной попадает на королевский бал и встречает принца. Несмотря на козни мачехи и сестер, любовь побеждает.",
+                genre: "Сказки",
+                age: "5-12 лет",
+                rating: 4.8,
+                pages: 48,
+                recommended: true,
+                mood: "Доброе",
+                isNew: false
+            },
+            {
+                id: 14,
+                title: "Русалочка",
+                author: "Ганс Христиан Андерсен",
+                cover: "https://placehold.co/600x400/E91E63/white?text=Русалочка",
+                summary: "Трогательная история о молодой русалке, которая влюбляется в принца и жертвует своим голосом, чтобы получить человеческие ноги и шанс быть с ним.",
+                genre: "Сказки",
+                age: "8-14 лет",
+                rating: 4.7,
+                pages: 72,
+                recommended: true,
+                mood: "Вдохновляющее",
+                isNew: false
+            },
+            {
+                id: 15,
+                title: "Гадкий утенок",
+                author: "Ганс Христиан Андерсен",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Гадкий+утенок",
+                summary: "Сказка о некрасивом утенке, которого все обижают, но который со временем превращается в прекрасного лебедя. История учит не судить по внешности и верить в себя.",
+                genre: "Сказки",
+                age: "4-10 лет",
+                rating: 4.8,
+                pages: 36,
+                recommended: true,
+                mood: "Вдохновляющее",
+                isNew: true
+            },
+            {
+                id: 16,
+                title: "Красная Шапочка",
+                author: "Шарль Перро",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Красная+Шапочка",
+                summary: "Сказка о девочке, которая несет бабушке пирожки и встречает в лесу злого волка. Благодаря смелости и помощи охотников, Красная Шапочка и ее бабушка спасаются.",
+                genre: "Сказки",
+                age: "3-7 лет",
+                rating: 4.5,
+                pages: 20,
+                recommended: false,
+                mood: "Загадочное",
+                isNew: false
+            },
+            {
+                id: 17,
+                title: "Спящая красавица",
+                author: "Шарль Перро",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Спящая+красавица",
+                summary: "Волшебная сказка о принцессе, которую злая фея усыпляет на сто лет. Только поцелуй настоящей любви может разбудить ее от волшебного сна.",
+                genre: "Сказки",
+                age: "5-10 лет",
+                rating: 4.6,
+                pages: 44,
+                recommended: true,
+                mood: "Фэнтези",
+                isNew: false
+            },
+            {
+                id: 18,
+                title: "Три поросенка",
+                author: "Английская народная сказка",
+                cover: "https://placehold.co/600x400/FF9800/white?text=Три+поросенка",
+                summary: "Поучительная история о трех братьях-поросятах, которые строят дома из разных материалов. Когда приходит злой волк, только кирпичный дом спасает их от опасности.",
+                genre: "Сказки",
+                age: "3-7 лет",
+                rating: 4.4,
+                pages: 28,
+                recommended: false,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 19,
+                title: "Доктор Айболит",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Доктор+Айболит",
+                summary: "История о добром докторе, который лечит всех животных, независимо от того, кто они и откуда. Он путешествует в Африку, чтобы помочь больным обезьянам.",
+                genre: "Сказки",
+                age: "4-8 лет",
+                rating: 4.7,
+                pages: 64,
+                recommended: true,
+                mood: "Доброе",
+                isNew: true
+            },
+            {
+                id: 20,
+                title: "Федорино горе",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Федорино+горе",
+                summary: "Стихотворная сказка о неряшливой хозяйке, от которой сбежала вся посуда и утварь. Федора понимает свои ошибки и исправляется, после чего посуда возвращается к ней.",
+                genre: "Стихи",
+                age: "3-6 лет",
+                rating: 4.5,
+                pages: 16,
+                recommended: false,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 21,
+                title: "Муха-Цокотуха",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Муха-Цокотуха",
+                summary: "Веселая история о мухе, которая нашла денежку и устроила праздник. На пир пришел паук, который хотел съесть муху, но храбрый комар спас ее.",
+                genre: "Стихи",
+                age: "3-6 лет",
+                rating: 4.6,
+                pages: 20,
+                recommended: true,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 22,
+                title: "Тараканище",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/FF5722/white?text=Тараканище",
+                summary: "Стихотворная сказка о страшном таракане, который напугал всех зверей. Но маленький воробей не испугался и склевал таракана, спасая всех от страха.",
+                genre: "Стихи",
+                age: "3-6 лет",
+                rating: 4.4,
+                pages: 18,
+                recommended: false,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 23,
+                title: "Телефон",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/E91E63/white?text=Телефон",
+                summary: "Юмористическое стихотворение о том, как автору постоянно звонят по телефону разные животные с просьбами и жалобами.",
+                genre: "Стихи",
+                age: "3-6 лет",
+                rating: 4.5,
+                pages: 16,
+                recommended: true,
+                mood: "Веселое",
+                isNew: true
+            },
+            {
+                id: 24,
+                title: "Путаница",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Путаница",
+                summary: "Веселое стихотворение о том, как животные решили разговаривать по-другому: коровы замычали, киски заквакали, а уточки заквакали.",
+                genre: "Стихи",
+                age: "2-5 лет",
+                rating: 4.3,
+                pages: 12,
+                recommended: false,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 25,
+                title: "Краденое солнце",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Краденое+солнце",
+                summary: "Стихотворная сказка о крокодиле, который проглотил солнце, и о медведе, который спас всех, победив крокодила и вернув солнце на небо.",
+                genre: "Стихи",
+                age: "3-6 лет",
+                rating: 4.5,
+                pages: 20,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 26,
+                title: "Чудо-дерево",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Чудо-дерево",
+                summary: "Стихотворение о волшебном дереве, на котором растут не листья и цветы, а башмаки, туфельки, сапожки - все, что нужно детским ножкам.",
+                genre: "Стихи",
+                age: "2-5 лет",
+                rating: 4.4,
+                pages: 14,
+                recommended: false,
+                mood: "Фэнтези",
+                isNew: false
+            },
+            {
+                id: 27,
+                title: "Бармалей",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/FF9800/white?text=Бармалей",
+                summary: "История о Тане и Ване, которые отправились в Африку и встретили злого разбойника Бармалея. Доктор Айболит спасает детей и перевоспитывает Бармалея.",
+                genre: "Сказки",
+                age: "4-8 лет",
+                rating: 4.6,
+                pages: 32,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: true
+            },
+            {
+                id: 28,
+                title: "Топтыгин и Луна",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Топтыгин+и+Луна",
+                summary: "Стихотворение о медведе, который решил достать луну с неба, чтобы сделать из нее тарелку, но вместо этого упал в болото.",
+                genre: "Стихи",
+                age: "3-6 лет",
+                rating: 4.3,
+                pages: 16,
+                recommended: false,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 29,
+                title: "Загадки",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Загадки",
+                summary: "Сборник веселых и познавательных загадок для детей, которые развивают логическое мышление и воображение.",
+                genre: "Стихи",
+                age: "4-8 лет",
+                rating: 4.5,
+                pages: 40,
+                recommended: true,
+                mood: "Познавательное",
+                isNew: false
+            },
+            {
+                id: 30,
+                title: "Елка",
+                author: "Корней Чуковский",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Елка",
+                summary: "Новогоднее стихотворение о праздничной елке, подарках и веселье, которое ждет детей в этот волшебный праздник.",
+                genre: "Стихи",
+                age: "3-7 лет",
+                rating: 4.4,
+                pages: 18,
+                recommended: false,
+                mood: "Веселое",
+                isNew: true
+            },
+            {
+                id: 31,
+                title: "Приключения Чиполлино",
+                author: "Джанни Родари",
+                cover: "https://placehold.co/600x400/FF5722/white?text=Приключения+Чиполлино",
+                summary: "История о мальчике-луковке и его друзьях, которые борются с несправедливостью и угнетением в фруктово-овощном мире.",
+                genre: "Приключения",
+                age: "7-12 лет",
+                rating: 4.8,
+                pages: 200,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 32,
+                title: "Малыш и Карлсон",
+                author: "Астрид Линдгрен",
+                cover: "https://placehold.co/600x400/E91E63/white?text=Малыш+и+Карлсон",
+                summary: "Веселые истории о семилетнем Малыше и его забавном друге Карлсоне, который живет на крыше и обожает проказы и варенье.",
+                genre: "Приключения",
+                age: "6-12 лет",
+                rating: 4.9,
+                pages: 180,
+                recommended: true,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 33,
+                title: "Пеппи Длинныйчулок",
+                author: "Астрид Линдгрен",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Пеппи+Длинныйчулок",
+                summary: "История о необычной девочке Пеппи, которая обладает невероятной силой, живет одна с лошадью и обезьянкой, и постоянно попадает в забавные ситуации.",
+                genre: "Приключения",
+                age: "7-12 лет",
+                rating: 4.8,
+                pages: 220,
+                recommended: true,
+                mood: "Веселое",
+                isNew: true
+            },
+            {
+                id: 34,
+                title: "Приключения Эмиля из Лённеберги",
+                author: "Астрид Линдгрен",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Приключения+Эмиля",
+                summary: "Забавные истории о мальчике Эмиле, который постоянно попадает в неприятности, но всегда находит из них выход благодаря своей смекалке.",
+                genre: "Приключения",
+                age: "7-12 лет",
+                rating: 4.7,
+                pages: 240,
+                recommended: false,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 35,
+                title: "Рони, дочь разбойника",
+                author: "Астрид Линдгрен",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Рони,+дочь+разбойника",
+                summary: "История о дочери атамана разбойников, которая подружилась с сыном вражеского атамана. Их дружба помогает помирить два враждующих клана.",
+                genre: "Приключения",
+                age: "8-14 лет",
+                rating: 4.7,
+                pages: 260,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 36,
+                title: "Мы все из Бюллербю",
+                author: "Астрид Линдгрен",
+                cover: "https://placehold.co/600x400/FF9800/white?text=Мы+все+из+Бюллербю",
+                summary: "Добрые истории о жизни детей в маленькой шведской деревушке Бюллербю, их играх, приключениях и дружбе.",
+                genre: "Рассказы",
+                age: "6-10 лет",
+                rating: 4.6,
+                pages: 160,
+                recommended: false,
+                mood: "Доброе",
+                isNew: false
+            },
+            {
+                id: 37,
+                title: "Приключения Тома Сойера",
+                author: "Марк Твен",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Том+Сойер",
+                summary: "Захватывающие приключения мальчика Тома и его друга Гекльберри Финна в маленьком городке на Миссисипи. Поиски клада, пещеры и другие опасности.",
+                genre: "Приключения",
+                age: "9-14 лет",
+                rating: 4.8,
+                pages: 280,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 38,
+                title: "Приключения Гекльберри Финна",
+                author: "Марк Твен",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Гекльберри+Финн",
+                summary: "Продолжение приключений Гека Финна, который сплавляется на плоту по Миссисипи вместе с беглым рабом Джимом, переживая множество опасностей.",
+                genre: "Приключения",
+                age: "10-15 лет",
+                rating: 4.8,
+                pages: 320,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: true
+            },
+            {
+                id: 39,
+                title: "Остров сокровищ",
+                author: "Роберт Льюис Стивенсон",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Остров+сокровищ",
+                summary: "Захватывающая история о поисках пиратского клада на далеком острове. Юный Джим Хокинс становится участником опасного путешествия.",
+                genre: "Приключения",
+                age: "10-16 лет",
+                rating: 4.9,
+                pages: 300,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 40,
+                title: "Путешествие к центру Земли",
+                author: "Жюль Верн",
+                cover: "https://placehold.co/600x400/FF5722/white?text=Путешествие+к+центру+Земли",
+                summary: "Фантастическое путешествие профессора Линденброка и его племянника Акселя вглубь Земли через кратер исландского вулкана.",
+                genre: "Приключения",
+                age: "10-16 лет",
+                rating: 4.7,
+                pages: 340,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 41,
+                title: "Двадцать тысяч лье под водой",
+                author: "Жюль Верн",
+                cover: "https://placehold.co/600x400/E91E63/white?text=20000+лье+под+водой",
+                summary: "Захватывающая история о путешествии на подводной лодке \"Наутилус\" под командованием загадочного капитана Немо.",
+                genre: "Приключения",
+                age: "10-16 лет",
+                rating: 4.8,
+                pages: 380,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: true
+            },
+            {
+                id: 42,
+                title: "Таинственный остров",
+                author: "Жюль Верн",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Таинственный+остров",
+                summary: "Робинзонада о группе беглецов, оказавшихся на необитаемом острове, где они строят цивилизацию с помощью таинственного покровителя.",
+                genre: "Приключения",
+                age: "10-16 лет",
+                rating: 4.7,
+                pages: 420,
+                recommended: false,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 43,
+                title: "Вокруг света за 80 дней",
+                author: "Жюль Верн",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Вокруг+света+за+80+дней",
+                summary: "Англичанин Филеас Фогг заключает пари, что сможет объехать вокруг Земли за 80 дней, и отправляется в опасное путешествие со своим слугой.",
+                genre: "Приключения",
+                age: "9-14 лет",
+                rating: 4.7,
+                pages: 280,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 44,
+                title: "Пятнадцатилетний капитан",
+                author: "Жюль Верн",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=15-летний+капитан",
+                summary: "Юный Дик Сенд становится капитаном китобойного судна после гибели команды и ведет корабль через опасности Африки.",
+                genre: "Приключения",
+                age: "10-16 лет",
+                rating: 4.6,
+                pages: 320,
+                recommended: false,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 45,
+                title: "Дети капитана Гранта",
+                author: "Жюль Верн",
+                cover: "https://placehold.co/600x400/FF9800/white?text=Дети+капитана+Гранта",
+                summary: "Путешествие вокруг Земли по 37-й параллели в поисках пропавшего капитана Гранта. Опасности и приключения ждут героев на каждом шагу.",
+                genre: "Приключения",
+                age: "10-16 лет",
+                rating: 4.7,
+                pages: 480,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: true
+            },
+            {
+                id: 46,
+                title: "Робинзон Крузо",
+                author: "Даниель Дефо",
+                cover: "https://placehold.co/600x400/9C27B0/white?text=Робинзон+Крузо",
+                summary: "Классическая робинзонада о моряке, который провел 28 лет на необитаемом острове, справляясь с трудностями и опасностями.",
+                genre: "Приключения",
+                age: "10-16 лет",
+                rating: 4.8,
+                pages: 320,
+                recommended: true,
+                mood: "Приключенческое",
+                isNew: false
+            },
+            {
+                id: 47,
+                title: "Приключения барона Мюнхгаузена",
+                author: "Рудольф Эрих Распе",
+                cover: "https://placehold.co/600x400/2196F3/white?text=Мюнхгаузен",
+                summary: "Веселые и невероятные истории о похождениях хвастливого барона Мюнхгаузена, который летал на ядре и вытаскивал себя из болота за волосы.",
+                genre: "Приключения",
+                age: "8-12 лет",
+                rating: 4.7,
+                pages: 160,
+                recommended: true,
+                mood: "Веселое",
+                isNew: false
+            },
+            {
+                id: 48,
+                title: "Алиса в Стране чудес",
+                author: "Льюис Кэрролл",
+                cover: "https://placehold.co/600x400/4CAF50/white?text=Алиса+в+Стране+чудес",
+                summary: "Фантастическое путешествие девочки Алисы в подземный мир, где ее ждут невероятные приключения и встречи с странными существами.",
+                genre: "Фэнтези",
+                age: "8-14 лет",
+                rating: 4.8,
+                pages: 200,
+                recommended: true,
+                mood: "Фэнтези",
+                isNew: false
+            },
+            {
+                id: 49,
+                title: "Алиса в Зазеркалье",
+                author: "Льюис Кэрролл",
+                cover: "https://placehold.co/600x400/FF5722/white?text=Алиса+в+Зазеркалье",
+                summary: "Продолжение приключений Алисы, на этот раз в зеркальном мире, где все происходит наоборот, а герои шахматных фигур оживают.",
+                genre: "Фэнтези",
+                age: "8-14 лет",
+                rating: 4.7,
+                pages: 220,
+                recommended: true,
+                mood: "Фэнтези",
+                isNew: true
+            },
+            {
+                id: 50,
+                title: "Питер Пэн",
+                author: "Джеймс Мэтью Барри",
+                cover: "https://placehold.co/600x400/E91E63/white?text=Питер+Пэн",
+                summary: "История о мальчике, который не хотел взрослеть, и его приключениях с детьми Дарлинг в Нетландии, где их ждут пираты, феи и русалки.",
+                genre: "Фэнтези",
+                age: "7-12 лет",
+                rating: 4.8,
+                pages: 240,
+                recommended: true,
+                mood: "Фэнтези",
+                isNew: false
             }
         ];
 
@@ -1150,12 +1822,9 @@
                     ? book.summary.substring(0, 120) + '...' 
                     : book.summary;
                 
-                const badges = [];
-                if (book.recommended) badges.push('Рекомендуем');
-                if (book.isNew) badges.push('Новинка');
-                
                 bookCard.innerHTML = `
-                    ${badges.map(badge => `<div class="book-badge">${badge}</div>`).join('')}
+                    ${book.recommended ? '<div class="book-badge">Рекомендуем</div>' : ''}
+                    ${book.isNew ? '<div class="book-badge new">NEW</div>' : ''}
                     <div class="placeholder-cover">
                         ${book.title}
                     </div>
@@ -1286,13 +1955,23 @@
             displayBooks(filteredBooks);
         }
 
-        function toggleAdminPanel() {
-            const adminPanel = document.getElementById('admin-panel');
-            if (adminPanel.style.display === 'block') {
-                adminPanel.style.display = 'none';
+        function showAdminLogin() {
+            document.getElementById('admin-login-modal').style.display = 'flex';
+        }
+
+        function closeAdminLogin() {
+            document.getElementById('admin-login-modal').style.display = 'none';
+            document.getElementById('admin-password').value = '';
+        }
+
+        function checkAdminPassword() {
+            const password = document.getElementById('admin-password').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('admin-panel').style.display = 'block';
+                closeAdminLogin();
+                document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
             } else {
-                adminPanel.style.display = 'block';
-                adminPanel.scrollIntoView({ behavior: 'smooth' });
+                alert('Неверный пароль!');
             }
         }
 
@@ -1376,7 +2055,7 @@
         }
         
         function showHelp() {
-            alert('Наши библиотекари помогут подобрать книги по возрасту и интересам вашего ребенка');
+            alert('Наши библиотекари помогут подобрать  интересную книги');
         }
         
         function showFAQ() {
