@@ -11,6 +11,7 @@
             --primary: #4e54c8;
             --secondary: #8f94fb;
             --accent: #ff9a76;
+            --accent2: #ff6b6b;
             --light: #f8f9fa;
             --dark: #343a40;
             --success: #28a745;
@@ -97,6 +98,11 @@
 
         .btn-primary {
             background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--accent2);
             color: white;
         }
 
@@ -953,6 +959,118 @@
             margin-top: 5px;
         }
 
+        /* Стили для личного кабинета читателя */
+        .user-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            display: none;
+            position: relative;
+        }
+
+        .close-user-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            z-index: 10;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        .reserved-books {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .reserved-book-card {
+            background: #f8f9fa;
+            border-radius: var(--radius);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reserved-book-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .reserved-book-info {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .cancel-reservation-btn {
+            background: var(--accent2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cancel-reservation-btn:hover {
+            background: #ff5252;
+        }
+
+        /* Стили для рейтинга */
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+        }
+
+        .rating-star {
+            font-size: 1.5rem;
+            color: #e9ecef;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .rating-star.active {
+            color: var(--warning);
+        }
+
+        .rating-star:hover {
+            transform: scale(1.2);
+        }
+
+        .rating-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .reservation-success {
+            background: var(--success);
+            color: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -1034,6 +1152,10 @@
             .event-actions {
                 flex-direction: column;
             }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -1050,7 +1172,7 @@
                 </div>
             </div>
             <div class="header-buttons">
-                <button class="btn btn-outline" onclick="showLogin()"><i class="fas fa-user"></i> Войти</button>
+                <button class="btn btn-outline" onclick="showUserLogin()"><i class="fas fa-user"></i> Читатель</button>
                 <button class="btn btn-primary" onclick="showAdminLogin()"><i class="fas fa-cog"></i> Админка</button>
             </div>
         </div>
@@ -1133,7 +1255,7 @@
         </div>
     </section>
 
-    <!-- НОВЫЙ РАЗДЕЛ: Афиша мероприятий -->
+    <!-- Афиша мероприятий -->
     <section class="events-section" id="events-section">
         <div class="container">
             <div class="section-title">
@@ -1204,6 +1326,7 @@
         </div>
     </section>
 
+    <!-- Панель администратора -->
     <div class="admin-panel" id="admin-panel">
         <span class="close-admin-panel" onclick="closeAdminPanel()">&times;</span>
         <div class="container">
@@ -1281,6 +1404,26 @@
             <div class="admin-actions">
                 <button class="btn btn-outline" onclick="clearAdminForm()">Очистить</button>
                 <button class="btn btn-primary" onclick="addBookFromAdmin()">Добавить книгу</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Личный кабинет читателя -->
+    <div class="user-panel" id="user-panel">
+        <span class="close-user-panel" onclick="closeUserPanel()">&times;</span>
+        <div class="container">
+            <div class="section-title">
+                <h2 class="handwriting">Личный кабинет читателя</h2>
+                <p>Ваши забронированные книги</p>
+            </div>
+            <div id="user-reserved-books" class="reserved-books">
+                <!-- Здесь будут отображаться забронированные книги -->
+            </div>
+            <div id="no-reserved-books" style="text-align: center; padding: 40px; display: none;">
+                <p>У вас нет забронированных книг</p>
+                <button class="btn btn-primary" onclick="closeUserPanel(); scrollToBooks();">
+                    <i class="fas fa-book"></i> Найти книги
+                </button>
             </div>
         </div>
     </div>
@@ -1389,6 +1532,7 @@
         </div>
     </footer>
 
+    <!-- Модальное окно книги -->
     <div class="modal" id="book-modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">&times;</span>
@@ -1397,6 +1541,7 @@
         </div>
     </div>
 
+    <!-- Модальное окно входа для администратора -->
     <div class="login-modal" id="admin-login-modal">
         <div class="login-content">
             <span class="login-close" onclick="closeAdminLogin()">&times;</span>
@@ -1408,10 +1553,39 @@
         </div>
     </div>
 
+    <!-- Модальное окно входа для читателя -->
+    <div class="login-modal" id="user-login-modal">
+        <div class="login-content">
+            <span class="login-close" onclick="closeUserLogin()">&times;</span>
+            <h2>Вход в личный кабинет</h2>
+            <p>Введите ваше имя для входа</p>
+            <input type="text" class="login-input" id="user-name" placeholder="Ваше имя">
+            <button class="btn btn-primary" onclick="checkUserLogin()" style="width: 100%; margin-top: 15px;">Войти</button>
+            <button class="btn btn-outline" onclick="closeUserLogin()" style="width: 100%; margin-top: 10px; background: #6c757d; color: white;">Отмена</button>
+        </div>
+    </div>
+
+    <!-- Окно подтверждения бронирования -->
+    <div class="modal" id="reservation-modal">
+        <div class="modal-content" style="max-width: 500px; text-align: center; padding: 30px;">
+            <span class="close-modal" onclick="closeReservationModal()">&times;</span>
+            <div id="reservation-content">
+                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 20px;"></i>
+                <h2 style="margin-bottom: 15px;">Книга забронирована!</h2>
+                <p id="reservation-message" style="margin-bottom: 25px;">Вы успешно забронировали книгу. Заберите её в библиотеке в течение 3 дней.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="closeReservationModal()">Понятно</button>
+                    <button class="btn btn-outline" onclick="closeReservationModal(); showUserPanel();" style="background: #6c757d; color: white;">Мои бронирования</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Пароль для доступа к админке (можно изменить)
-        const ADMIN_PASSWORD = "admin123";
+        // Пароль для доступа к админке
+        const ADMIN_PASSWORD = "123";
         
+        // Данные библиотеки
         let books = JSON.parse(localStorage.getItem('libraryBooks')) || [
             {
                 id: 1,
@@ -1425,7 +1599,8 @@
                 pages: 48,
                 recommended: true,
                 mood: "Доброе",
-                isNew: false
+                isNew: false,
+                userRatings: {}
             },
             {
                 id: 2,
@@ -1439,7 +1614,8 @@
                 pages: 144,
                 recommended: true,
                 mood: "Веселое",
-                isNew: true
+                isNew: true,
+                userRatings: {}
             },
             {
                 id: 3,
@@ -1453,88 +1629,47 @@
                 pages: 320,
                 recommended: false,
                 mood: "Веселое",
-                isNew: false
+                isNew: false,
+                userRatings: {}
             },
             {
                 id: 4,
                 title: "Мойдодыр",
                 author: "Корней Чуковский",
                 cover: "https://placehold.co/600x400/9C27B0/white?text=Мойдодыр",
-                summary: "Стихотворная сказка о мальчике-грязнуле и строгом умывальнике Мойдодыре. От мальчика сбегают все вещи, потому что он не любил умываться и содержать себя в чистоте. Мойдодыр призывает щётки и мыло навести порядок. В конце концов мальчик понимает важность гигиены и становится чистым и аккуратным.",
+                summary: "Стихотворная сказка о мальчике-грязнуле и строгом умывальнике Мойдодыре. От мальчика сбегают все веси, потому что он не любил умываться и содержать себя в чистоте. Мойдодыр призывает щётки и мыло навести порядок. В конце концов мальчик понимает важность гигиены и становится чистым и аккуратным.",
                 genre: "Стихи",
                 age: "2-6 лет",
                 rating: 4.8,
                 pages: 16,
                 recommended: true,
                 mood: "Веселое",
-                isNew: true
-            },
-            {
-                id: 5,
-                title: "Снежная королева",
-                author: "Ганс Христиан Андерсен",
-                cover: "https://placehold.co/600x400/03A9F4/white?text=Снежная+королева",
-                summary: "Волшебная сказка о девочке Герде, которая отправляется на поиски своего друга Кая, похищенного Снежной королевой. По пути Герда встречает разных персонажей, которые помогают ей в её нелёгком путешествии. Только настоящая любовь и преданность Герды способны растопить ледяное сердце Кая и освободить его из плена Снежной королевы.",
-                genre: "Сказки",
-                age: "6-14 лет",
-                rating: 4.9,
-                pages: 64,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: false
-            },
-            {
-                id: 6,
-                title: "Золотой ключик",
-                author: "Алексей Толстой",
-                cover: "https://placehold.co/600x400/FF5722/white?text=Золотой+ключик",
-                summary: "Сказка о деревянном мальчике Буратино, который ищет золотой ключик. По пути он встречает разных персонажей: Мальвину, Пьеро, Артемона, а также злого Карабаса-Барабаса. В конце концов Буратино находит потайную дверцу, которую открывает золотым ключиком, и за ней оказывается прекрасный кукольный театр.",
-                genre: "Сказки",
-                age: "5-10 лет",
-                rating: 4.7,
-                pages: 128,
-                recommended: false,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 7,
-                title: "Волшебник Изумрудного города",
-                author: "Александр Волков",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Волшебник+Изумрудного+города",
-                summary: "Девочка Элли из Канзаса попадает в волшебную страну, где её ждут удивительные приключения. Вместе с новыми друзьями - Страшилой, Железным Дровосеком и Трусливым Львом - она отправляется к Великому Гудвину, Волшебнику Изумрудного города, который может исполнить их самые заветные желания.",
-                genre: "Фэнтези",
-                age: "7-12 лет",
-                rating: 4.9,
-                pages: 240,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: true
-            },
-            {
-                id: 8,
-                title: "Приключения Незнайки",
-                author: "Николай Носов",
-                cover: "https://placehold.co/600x400/E91E63/white?text=Приключения+Незнайки",
-                summary: "Веселые истории о коротышках из Цветочного города и их невероятных приключениях. Главный герой - Незнайка, который постоянно попадает в забавные ситуации. Вместе с друзьями он путешествует на воздушном шаре, строит ракету и отправляется в Солнечный город.",
-                genre: "Приключения",
-                age: "6-12 лет",
-                rating: 4.8,
-                pages: 320,
-                recommended: true,
-                mood: "Веселое",
-                isNew: false
-            },
-            // Остальные книги (до 50) остаются в массиве, но не отображаются на главной
+                isNew: true,
+                userRatings: {}
+            }
         ];
 
+        // Бронирования и пользователи
+        let reservations = JSON.parse(localStorage.getItem('libraryReservations')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        
         // Переменная для отслеживания, показываем ли мы все книги или только часть
         let showingAllBooks = false;
         // Переменная для хранения загруженного изображения
         let uploadedImage = null;
+        // Текущая книга для оценки
+        let currentBookForRating = null;
 
         function saveBooksToStorage() {
             localStorage.setItem('libraryBooks', JSON.stringify(books));
+        }
+
+        function saveReservationsToStorage() {
+            localStorage.setItem('libraryReservations', JSON.stringify(reservations));
+        }
+
+        function saveCurrentUser() {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
         }
 
         function displayBooks(booksToShow, limit = false) {
@@ -1557,9 +1692,13 @@
                     ? book.summary.substring(0, 120) + '...' 
                     : book.summary;
                 
+                // Проверяем, забронирована ли книга текущим пользователем
+                const isReserved = currentUser && reservations.some(r => r.bookId === book.id && r.userId === currentUser.id);
+                
                 bookCard.innerHTML = `
                     ${book.recommended ? '<div class="book-badge">Рекомендуем</div>' : ''}
                     ${book.isNew ? '<div class="book-badge new">NEW</div>' : ''}
+                    ${isReserved ? '<div class="book-badge" style="background: var(--accent2);">Забронирована</div>' : ''}
                     <img src="${book.cover}" alt="${book.title}" class="book-cover">
                     <div class="book-info">
                         <h3 class="book-title">${book.title}</h3>
@@ -1570,8 +1709,8 @@
                         </div>
                         <p class="book-summary">${shortSummary}</p>
                         <div class="book-actions">
-                            <button class="action-btn btn-read" onclick="readBook(${book.id})">
-                                <i class="fas fa-book-open"></i> Читать
+                            <button class="action-btn btn-read" onclick="rateBook(${book.id})" ${isReserved ? 'disabled style="opacity: 0.5;"' : ''}>
+                                <i class="fas fa-star"></i> Оценить
                             </button>
                             <button class="action-btn btn-details" onclick="openBookModal(${book.id})">
                                 <i class="fas fa-info-circle"></i> Подробнее
@@ -1601,6 +1740,11 @@
             const book = books.find(b => b.id === bookId);
             if (!book) return;
             
+            // Проверяем, забронирована ли книга текущим пользователем
+            const isReserved = currentUser && reservations.some(r => r.bookId === book.id && r.userId === currentUser.id);
+            // Проверяем, оценил ли пользователь книгу
+            const userRating = currentUser && book.userRatings && book.userRatings[currentUser.id] ? book.userRatings[currentUser.id] : 0;
+            
             const modalContent = document.getElementById('modal-book-content');
             modalContent.innerHTML = `
                 <img src="${book.cover}" alt="${book.title}" class="modal-book-cover">
@@ -1611,6 +1755,18 @@
                         <span class="book-genre">${book.genre}</span>
                         <span class="book-rating"><i class="fas fa-star"></i> ${book.rating}</span>
                         <span class="book-age">${book.age}</span>
+                    </div>
+                    <div class="rating-container">
+                        <div class="rating-stars" id="rating-stars">
+                            ${[1,2,3,4,5].map(star => `
+                                <span class="rating-star ${star <= (userRating || book.rating) ? 'active' : ''}" 
+                                      data-rating="${star}" 
+                                      onclick="setRating(${star}, ${book.id})">
+                                    <i class="fas fa-star"></i>
+                                </span>
+                            `).join('')}
+                        </div>
+                        <span class="rating-value">${book.rating}</span>
                     </div>
                     <div class="modal-book-details">
                         <div class="detail-item">
@@ -1632,8 +1788,12 @@
                     </div>
                     <p class="modal-book-summary">${book.summary}</p>
                     <div class="modal-actions">
-                        <button class="btn btn-primary" onclick="reserveBook(${book.id})"><i class="fas fa-book-open"></i> Забронировать</button>
-                        <button class="btn btn-outline" onclick="addToFavorites(${book.id})"><i class="fas fa-heart"></i> В избранное</button>
+                        <button class="btn btn-primary" onclick="reserveBook(${book.id})" ${isReserved ? 'disabled style="opacity: 0.5;"' : ''}>
+                            <i class="fas fa-book-open"></i> ${isReserved ? 'Забронирована' : 'Забронировать'}
+                        </button>
+                        <button class="btn btn-outline" onclick="addToFavorites(${book.id})">
+                            <i class="fas fa-heart"></i> В избранное
+                        </button>
                     </div>
                 </div>
             `;
@@ -1645,21 +1805,113 @@
             document.getElementById('book-modal').style.display = 'none';
         }
 
-        function readBook(bookId) {
-            const book = books.find(b => b.id === bookId);
-            if (book) {
-                alert(`Книга "${book.title}" доступна для чтения в библиотеке! Приходите к нам по адресу: с. Ремонтное, ул. Дзержинского, 21`);
+        function setRating(rating, bookId) {
+            if (!currentUser) {
+                alert('Пожалуйста, войдите в систему, чтобы оценить книгу');
+                closeModal();
+                showUserLogin();
+                return;
             }
+            
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            // Сохраняем оценку пользователя
+            if (!book.userRatings) book.userRatings = {};
+            book.userRatings[currentUser.id] = rating;
+            
+            // Пересчитываем общий рейтинг
+            const ratings = Object.values(book.userRatings);
+            const totalRating = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
+            book.rating = Math.round(totalRating * 10) / 10;
+            
+            saveBooksToStorage();
+            
+            // Обновляем отображение рейтинга
+            const stars = document.querySelectorAll('#rating-stars .rating-star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+            
+            document.querySelector('.rating-value').textContent = book.rating;
+            
+            // Обновляем отображение книги в каталоге
+            searchBooks();
+        }
+
+        function rateBook(bookId) {
+            if (!currentUser) {
+                showUserLogin();
+                return;
+            }
+            
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            // Проверяем, не забронирована ли книга
+            const isReserved = reservations.some(r => r.bookId === book.id && r.userId === currentUser.id);
+            if (isReserved) {
+                alert('Вы не можете оценить забронированную книгу');
+                return;
+            }
+            
+            openBookModal(bookId);
         }
 
         function reserveBook(bookId) {
-            const book = books.find(b => b.id === bookId);
-            if (book) {
-                alert(`Книга "${book.title}" забронирована! Мы сохраним её для вас до конца недели.`);
+            if (!currentUser) {
+                closeModal();
+                showUserLogin();
+                return;
             }
+            
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            // Проверяем, не забронирована ли уже книга
+            const existingReservation = reservations.find(r => r.bookId === book.id && r.userId === currentUser.id);
+            if (existingReservation) {
+                alert('Вы уже забронировали эту книгу!');
+                return;
+            }
+            
+            // Создаем бронирование
+            const reservation = {
+                id: Date.now(),
+                bookId: book.id,
+                userId: currentUser.id,
+                bookTitle: book.title,
+                bookAuthor: book.author,
+                bookCover: book.cover,
+                date: new Date().toLocaleDateString('ru-RU')
+            };
+            
+            reservations.push(reservation);
+            saveReservationsToStorage();
+            
+            // Показываем окно подтверждения
+            document.getElementById('reservation-message').textContent = `Вы успешно забронировали книгу "${book.title}". Заберите её в библиотеке в течение 3 дней.`;
+            document.getElementById('reservation-modal').style.display = 'flex';
+            
+            // Обновляем отображение книг
+            searchBooks();
+            closeModal();
+        }
+
+        function closeReservationModal() {
+            document.getElementById('reservation-modal').style.display = 'none';
         }
 
         function addToFavorites(bookId) {
+            if (!currentUser) {
+                alert('Пожалуйста, войдите в систему, чтобы добавить книгу в избранное');
+                return;
+            }
+            
             const book = books.find(b => b.id === bookId);
             if (book) {
                 alert(`Книга "${book.title}" добавлена в избранное!`);
@@ -1668,6 +1920,10 @@
 
         // Функции для работы с мероприятиями
         function registerForEvent(eventName) {
+            if (!currentUser) {
+                showUserLogin();
+                return;
+            }
             alert(`Вы успешно записались на мероприятие "${eventName}"! Мы ждем вас в указанное время.`);
         }
 
@@ -1717,44 +1973,100 @@
             }
         }
 
-        function searchBooks() {
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            const genreFilter = document.getElementById('genre-filter').value;
-            const ageFilter = document.getElementById('age-filter').value;
-            const moodFilter = document.getElementById('mood-filter').value;
-            const recommendationFilter = document.getElementById('recommendation-filter').value;
+        // Функции для личного кабинета пользователя
+        function showUserLogin() {
+            document.getElementById('user-login-modal').style.display = 'flex';
+        }
+
+        function closeUserLogin() {
+            document.getElementById('user-login-modal').style.display = 'none';
+            document.getElementById('user-name').value = '';
+        }
+
+        function checkUserLogin() {
+            const userName = document.getElementById('user-name').value.trim();
+            if (!userName) {
+                alert('Пожалуйста, введите ваше имя');
+                return;
+            }
             
-            let filteredBooks = books.filter(book => {
-                const matchesSearch = !searchTerm || 
-                    book.title.toLowerCase().includes(searchTerm) || 
-                    book.author.toLowerCase().includes(searchTerm) ||
-                    book.genre.toLowerCase().includes(searchTerm) ||
-                    book.summary.toLowerCase().includes(searchTerm);
-                
-                const matchesGenre = genreFilter === 'all' || book.genre === genreFilter;
-                const matchesAge = ageFilter === 'all' || book.age.includes(ageFilter);
-                const matchesMood = moodFilter === 'all' || book.mood === moodFilter;
-                
-                let matchesRecommendation = true;
-                if (recommendationFilter === 'recommended') {
-                    matchesRecommendation = book.recommended;
-                } else if (recommendationFilter === 'new') {
-                    matchesRecommendation = book.isNew;
-                } else if (recommendationFilter === 'popular') {
-                    matchesRecommendation = book.rating >= 4.5;
-                }
-                
-                return matchesSearch && matchesGenre && matchesAge && matchesMood && matchesRecommendation;
-            });
+            // Создаем или находим пользователя
+            currentUser = {
+                id: Date.now(),
+                name: userName
+            };
             
-            // При поиске показываем все найденные книги без ограничений
-            if (searchTerm || genreFilter !== 'all' || ageFilter !== 'all' || moodFilter !== 'all' || recommendationFilter !== 'all') {
-                displayBooks(filteredBooks, false);
+            saveCurrentUser();
+            closeUserLogin();
+            
+            // Показываем приветствие
+            alert(`Добро пожаловать, ${userName}!`);
+            
+            // Обновляем кнопку входа
+            document.querySelector('.header-buttons').innerHTML = `
+                <button class="btn btn-secondary" onclick="showUserPanel()">
+                    <i class="fas fa-user"></i> ${userName}
+                </button>
+                <button class="btn btn-primary" onclick="showAdminLogin()"><i class="fas fa-cog"></i> Админка</button>
+            `;
+        }
+
+        function showUserPanel() {
+            if (!currentUser) {
+                showUserLogin();
+                return;
+            }
+            
+            // Получаем бронирования пользователя
+            const userReservations = reservations.filter(r => r.userId === currentUser.id);
+            
+            const reservedBooksContainer = document.getElementById('user-reserved-books');
+            const noReservedBooks = document.getElementById('no-reserved-books');
+            
+            if (userReservations.length === 0) {
+                reservedBooksContainer.style.display = 'none';
+                noReservedBooks.style.display = 'block';
             } else {
-                displayBooks(filteredBooks, true);
+                reservedBooksContainer.style.display = 'grid';
+                noReservedBooks.style.display = 'none';
+                
+                // Отображаем забронированные книги
+                reservedBooksContainer.innerHTML = userReservations.map(reservation => `
+                    <div class="reserved-book-card">
+                        <img src="${reservation.bookCover}" alt="${reservation.bookTitle}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px;">
+                        <div class="reserved-book-title">${reservation.bookTitle}</div>
+                        <div class="reserved-book-info">${reservation.bookAuthor}</div>
+                        <div class="reserved-book-info">Забронирована: ${reservation.date}</div>
+                        <button class="cancel-reservation-btn" onclick="cancelReservation(${reservation.id})">
+                            <i class="fas fa-times"></i> Отменить бронь
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('user-panel').style.display = 'block';
+            document.getElementById('user-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeUserPanel() {
+            document.getElementById('user-panel').style.display = 'none';
+        }
+
+        function cancelReservation(reservationId) {
+            if (confirm('Вы уверены, что хотите отменить бронирование?')) {
+                reservations = reservations.filter(r => r.id !== reservationId);
+                saveReservationsToStorage();
+                
+                // Обновляем отображение
+                showUserPanel();
+                // Обновляем каталог книг
+                searchBooks();
+                
+                alert('Бронирование отменено');
             }
         }
 
+        // Функции для администратора
         function showAdminLogin() {
             document.getElementById('admin-login-modal').style.display = 'flex';
         }
@@ -1799,14 +2111,14 @@
             const author = document.getElementById('admin-author').value;
             const genre = document.getElementById('admin-genre').value;
             const age = document.getElementById('admin-age').value;
-            const rating = parseFloat(document.getElementById('admin-rating').value);
-            const pages = parseInt(document.getElementById('admin-pages').value);
+            const rating = parseFloat(document.getElementById('admin-rating').value) || 0;
+            const pages = parseInt(document.getElementById('admin-pages').value) || 0;
             const summary = document.getElementById('admin-summary').value;
             const recommended = document.getElementById('admin-recommended').checked;
             const isNew = document.getElementById('admin-new').checked;
             const imageUrl = document.getElementById('image-url').value;
 
-            if (!title || !author || !genre || !age || !rating || !pages || !summary) {
+            if (!title || !author || !genre || !age || !summary) {
                 alert('Пожалуйста, заполните все обязательные поля формы');
                 return;
             }
@@ -1834,7 +2146,8 @@
                 pages,
                 recommended,
                 mood: "Доброе",
-                isNew
+                isNew,
+                userRatings: {}
             };
 
             books.push(newBook);
@@ -1845,16 +2158,50 @@
             alert('Книга успешно добавлена в библиотеку!');
         }
 
+        function searchBooks() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const genreFilter = document.getElementById('genre-filter').value;
+            const ageFilter = document.getElementById('age-filter').value;
+            const moodFilter = document.getElementById('mood-filter').value;
+            const recommendationFilter = document.getElementById('recommendation-filter').value;
+            
+            let filteredBooks = books.filter(book => {
+                const matchesSearch = !searchTerm || 
+                    book.title.toLowerCase().includes(searchTerm) || 
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.genre.toLowerCase().includes(searchTerm) ||
+                    book.summary.toLowerCase().includes(searchTerm);
+                
+                const matchesGenre = genreFilter === 'all' || book.genre === genreFilter;
+                const matchesAge = ageFilter === 'all' || book.age.includes(ageFilter);
+                const matchesMood = moodFilter === 'all' || book.mood === moodFilter;
+                
+                let matchesRecommendation = true;
+                if (recommendationFilter === 'recommended') {
+                    matchesRecommendation = book.recommended;
+                } else if (recommendationFilter === 'new') {
+                    matchesRecommendation = book.isNew;
+                } else if (recommendationFilter === 'popular') {
+                    matchesRecommendation = book.rating >= 4.5;
+                }
+                
+                return matchesSearch && matchesGenre && matchesAge && matchesMood && matchesRecommendation;
+            });
+            
+            // При поиске показываем все найденные книги без ограничений
+            if (searchTerm || genreFilter !== 'all' || ageFilter !== 'all' || moodFilter !== 'all' || recommendationFilter !== 'all') {
+                displayBooks(filteredBooks, false);
+            } else {
+                displayBooks(filteredBooks, true);
+            }
+        }
+
         function scrollToBooks() {
             document.getElementById('books-section').scrollIntoView({ behavior: 'smooth' });
         }
         
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function showLogin() {
-            alert('Функция входа будет доступна в ближайшее время');
         }
         
         function showNewBooks() {
@@ -1890,6 +2237,16 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, есть ли текущий пользователь
+            if (currentUser) {
+                document.querySelector('.header-buttons').innerHTML = `
+                    <button class="btn btn-secondary" onclick="showUserPanel()">
+                        <i class="fas fa-user"></i> ${currentUser.name}
+                    </button>
+                    <button class="btn btn-primary" onclick="showAdminLogin()"><i class="fas fa-cog"></i> Админка</button>
+                `;
+            }
+            
             // При загрузке показываем только 8 книг
             displayBooks(books, true);
             
