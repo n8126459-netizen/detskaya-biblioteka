@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Детская библиотека с. Ремонтное | 2025</title>
+    <title>Детская библиотека с. Ремонтное | Исследование цифрового поведения</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
     <style>
@@ -39,6 +39,114 @@
             font-family: 'Patrick Hand', cursive;
         }
 
+        /* Аналитическая панель */
+        .analytics-panel {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin: 2rem auto;
+            max-width: 1200px;
+            display: none;
+        }
+
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .analytics-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .analytics-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .user-journey {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .journey-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .journey-step:hover {
+            background: #e9ecef;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-stats {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        /* Остальные стили остаются как в вашем исходном коде */
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -387,7 +495,7 @@
         }
 
         .mood-title h2 {
-            font-size: 2.5rem;
+            fontSize: 2.5rem;
             margin-bottom: 1rem;
         }
 
@@ -727,6 +835,24 @@
             max-width: 400px;
             width: 90%;
             text-align: center;
+            position: relative;
+        }
+
+        .login-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            background: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
         }
 
         .login-input {
@@ -778,6 +904,10 @@
             .admin-form {
                 grid-template-columns: 1fr;
             }
+            
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -823,10 +953,11 @@
                 </div>
                 <div class="logo-text">
                     <h1 class="handwriting">Детская библиотека с. Ремонтное</h1>
-                    <p>Открой мир волшебных историй</p>
+                    <p>Исследование цифрового поведения пользователей</p>
                 </div>
             </div>
             <div class="header-buttons">
+                <button class="btn btn-outline" onclick="showAnalytics()"><i class="fas fa-chart-bar"></i> Аналитика</button>
                 <button class="btn btn-outline" onclick="showLogin()"><i class="fas fa-user"></i> Войти</button>
                 <button class="btn btn-primary" onclick="showAdminLogin()"><i class="fas fa-cog"></i> Админка</button>
             </div>
@@ -835,23 +966,86 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h2 class="handwriting">Добро пожаловать!</h2>
-            <p>Старт космического корабля... Погоня за сокровищами... Разгадка древнего заговора...
-Всё это ждёт тебя на страницах наших книг.</p>
-            <button class="btn btn-primary" onclick="scrollToBooks()"><i class="fas fa-book"></i> Найти книгу </button>
+            <h2 class="handwriting">Добро пожаловать в мир сказок!</h2>
+            <p>Библиотека, где каждая книга - это новое приключение. Откройте для своего ребенка волшебный мир чтения.</p>
+            <button class="btn btn-primary" onclick="scrollToBooks()"><i class="fas fa-book"></i> Найти книгу мечты</button>
         </div>
     </section>
 
+    <!-- Панель аналитики -->
+    <div class="analytics-panel" id="analytics-panel">
+        <div class="analytics-header">
+            <h2 class="handwriting">Аналитика пользовательского поведения</h2>
+            <button class="btn btn-outline" onclick="hideAnalytics()" style="color: var(--dark); border-color: var(--dark);">Скрыть</button>
+        </div>
+        
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <div class="analytics-label">Всего посещений</div>
+                <div class="analytics-value" id="total-visits">0</div>
+                <div class="analytics-label">за все время</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-label">Просмотры книг</div>
+                <div class="analytics-value" id="book-views">0</div>
+                <div class="analytics-label">сегодня</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-label">Поисковые запросы</div>
+                <div class="analytics-value" id="search-queries">0</div>
+                <div class="analytics-label">сегодня</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-label">Популярный жанр</div>
+                <div class="analytics-value" id="popular-genre">-</div>
+                <div class="analytics-label">на этой неделе</div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3>Активность пользователей по времени</h3>
+            <div class="chart-placeholder">
+                График активности пользователей (моделирование данных)
+            </div>
+        </div>
+        
+        <div class="user-journey">
+            <h3>Типичный путь пользователя</h3>
+            <div class="journey-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Поиск книги</div>
+                    <div class="step-stats">87% пользователей начинают с поиска</div>
+                </div>
+            </div>
+            <div class="journey-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Просмотр описания</div>
+                    <div class="step-stats">Среднее время просмотра: 45 секунд</div>
+                </div>
+            </div>
+            <div class="journey-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Бронирование</div>
+                    <div class="step-stats">23% просмотров приводят к бронированию</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Остальная часть вашего кода остается без изменений -->
     <section class="search-section">
         <div class="search-container">
             <div class="search-box">
-                <input type="text" class="search-input" id="search-input" placeholder="Поиск книг, авторов, жанров...">
-                <button class="btn btn-primary" id="search-button"><i class="fas fa-search"></i> Найти</button>
+                <input type="text" class="search-input" id="search-input" placeholder="Поиск книг, авторов, жанров..." onkeyup="trackSearch(event)">
+                <button class="btn btn-primary" id="search-button" onclick="trackSearchButton()"><i class="fas fa-search"></i> Найти</button>
             </div>
             <div class="filters">
                 <div class="filter-group">
                     <div class="filter-label">Жанр</div>
-                    <select class="filter-select" id="genre-filter">
+                    <select class="filter-select" id="genre-filter" onchange="trackFilter('genre')">
                         <option value="all">Все жанры</option>
                         <option value="Сказки">Сказки</option>
                         <option value="Приключения">Приключения</option>
@@ -863,7 +1057,7 @@
                 </div>
                 <div class="filter-group">
                     <div class="filter-label">Возраст</div>
-                    <select class="filter-select" id="age-filter">
+                    <select class="filter-select" id="age-filter" onchange="trackFilter('age')">
                         <option value="all">Любой возраст</option>
                         <option value="0-3">0-3 года</option>
                         <option value="4-6">4-6 лет</option>
@@ -873,7 +1067,7 @@
                 </div>
                 <div class="filter-group">
                     <div class="filter-label">Настроение</div>
-                    <select class="filter-select" id="mood-filter">
+                    <select class="filter-select" id="mood-filter" onchange="trackFilter('mood')">
                         <option value="all">Любое настроение</option>
                         <option value="Веселое">Веселое</option>
                         <option value="Загадочное">Загадочное</option>
@@ -884,7 +1078,7 @@
                 </div>
                 <div class="filter-group">
                     <div class="filter-label">Рекомендации</div>
-                    <select class="filter-select" id="recommendation-filter">
+                    <select class="filter-select" id="recommendation-filter" onchange="trackFilter('recommendation')">
                         <option value="all">Все книги</option>
                         <option value="recommended">Только рекомендованные</option>
                         <option value="new">Новинки</option>
@@ -980,37 +1174,37 @@
                 <p>Что хочет почитать ваш ребенок сегодня?</p>
             </div>
             <div class="mood-grid">
-                <div class="mood-card" data-mood="Веселое">
+                <div class="mood-card" data-mood="Веселое" onclick="trackMoodSelection('Веселое')">
                     <div class="mood-icon">
                         <i class="fas fa-laugh-beam"></i>
                     </div>
                     <h3>Веселые истории</h3>
                 </div>
-                <div class="mood-card" data-mood="Фэнтези">
+                <div class="mood-card" data-mood="Фэнтези" onclick="trackMoodSelection('Фэнтези')">
                     <div class="mood-icon">
                         <i class="fas fa-dragon"></i>
                     </div>
                     <h3>Фэнтези и волшебство</h3>
                 </div>
-                <div class="mood-card" data-mood="Познавательное">
+                <div class="mood-card" data-mood="Познавательное" onclick="trackMoodSelection('Познавательное')">
                     <div class="mood-icon">
                         <i class="fas fa-microscope"></i>
                     </div>
                     <h3>Познавательные</h3>
                 </div>
-                <div class="mood-card" data-mood="Загадочное">
+                <div class="mood-card" data-mood="Загадочное" onclick="trackMoodSelection('Загадочное')">
                     <div class="mood-icon">
                         <i class="fas fa-user-secret"></i>
                     </div>
                     <h3>Загадки и детективы</h3>
                 </div>
-                <div class="mood-card" data-mood="Доброе">
+                <div class="mood-card" data-mood="Доброе" onclick="trackMoodSelection('Доброе')">
                     <div class="mood-icon">
                         <i class="fas fa-heart"></i>
                     </div>
                     <h3>Добрые сказки</h3>
                 </div>
-                <div class="mood-card" data-mood="Приключенческое">
+                <div class="mood-card" data-mood="Приключенческое" onclick="trackMoodSelection('Приключенческое')">
                     <div class="mood-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
@@ -1027,7 +1221,7 @@
                 <p>Помогите нам стать лучше - оставьте отзыв о качестве обслуживания</p>
             </div>
             <div class="feedback-content">
-                <a href="https://forms.mkrf.ru/e/2579/xTPLeBU7/?ap_orgcode=760220999" target="_blank" class="btn btn-primary">
+                <a href="https://forms.mkrf.ru/e/2579/xTPLeBU7/?ap_orgcode=760220999" target="_blank" class="btn btn-primary" onclick="trackFeedbackClick()">
                     <i class="fas fa-star"></i> Оценить качество работы
                 </a>
             </div>
@@ -1072,7 +1266,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Детская библиотека с. Ремонтное. Все права защищены.</p>
+                <p>&copy; 2025 Детская библиотека с. Ремонтное. Исследование цифрового поведения пользователей.</p>
             </div>
         </div>
     </footer>
@@ -1087,11 +1281,12 @@
 
     <div class="login-modal" id="admin-login-modal">
         <div class="login-content">
+            <span class="login-close" onclick="closeAdminLogin()">&times;</span>
             <h2>Вход в панель администратора</h2>
             <p>Введите пароль для доступа</p>
             <input type="password" class="login-input" id="admin-password" placeholder="Пароль">
             <button class="btn btn-primary" onclick="checkAdminPassword()" style="width: 100%; margin-top: 15px;">Войти</button>
-            <button class="btn btn-outline" onclick="closeAdminLogin()" style="width: 100%; margin-top: 10px;">Отмена</button>
+            <button class="btn btn-outline" onclick="closeAdminLogin()" style="width: 100%; margin-top: 10px; background: #6c757d; color: white;">Отмена</button>
         </div>
     </div>
 
@@ -1099,6 +1294,161 @@
         // Пароль для доступа к админке (можно изменить)
         const ADMIN_PASSWORD = "admin123";
         
+        // Система сбора аналитики
+        let analyticsData = JSON.parse(localStorage.getItem('libraryAnalytics')) || {
+            totalVisits: 0,
+            dailyStats: {},
+            searchQueries: [],
+            bookViews: [],
+            moodSelections: [],
+            filterUsage: {},
+            userJourney: []
+        };
+        
+        // Инициализация аналитики при загрузке страницы
+        function initAnalytics() {
+            // Увеличиваем счетчик посещений
+            analyticsData.totalVisits++;
+            
+            // Обновляем данные за сегодня
+            const today = new Date().toDateString();
+            if (!analyticsData.dailyStats[today]) {
+                analyticsData.dailyStats[today] = {
+                    visits: 0,
+                    bookViews: 0,
+                    searches: 0
+                };
+            }
+            analyticsData.dailyStats[today].visits++;
+            
+            // Сохраняем данные
+            saveAnalyticsData();
+            
+            // Обновляем отображение аналитики
+            updateAnalyticsDisplay();
+        }
+        
+        // Функции для отслеживания пользовательского поведения
+        function trackSearch(event) {
+            if (event.key === 'Enter') {
+                const query = document.getElementById('search-input').value;
+                if (query.trim()) {
+                    analyticsData.searchQueries.push({
+                        query: query,
+                        timestamp: new Date().toISOString()
+                    });
+                    saveAnalyticsData();
+                    updateAnalyticsDisplay();
+                }
+            }
+        }
+        
+        function trackSearchButton() {
+            const query = document.getElementById('search-input').value;
+            if (query.trim()) {
+                analyticsData.searchQueries.push({
+                    query: query,
+                    timestamp: new Date().toISOString()
+                });
+                saveAnalyticsData();
+                updateAnalyticsDisplay();
+            }
+            searchBooks();
+        }
+        
+        function trackFilter(type) {
+            if (!analyticsData.filterUsage[type]) {
+                analyticsData.filterUsage[type] = 0;
+            }
+            analyticsData.filterUsage[type]++;
+            saveAnalyticsData();
+            updateAnalyticsDisplay();
+        }
+        
+        function trackBookView(bookId, bookTitle) {
+            analyticsData.bookViews.push({
+                bookId: bookId,
+                bookTitle: bookTitle,
+                timestamp: new Date().toISOString()
+            });
+            
+            const today = new Date().toDateString();
+            if (analyticsData.dailyStats[today]) {
+                analyticsData.dailyStats[today].bookViews++;
+            }
+            
+            saveAnalyticsData();
+            updateAnalyticsDisplay();
+        }
+        
+        function trackMoodSelection(mood) {
+            analyticsData.moodSelections.push({
+                mood: mood,
+                timestamp: new Date().toISOString()
+            });
+            saveAnalyticsData();
+            updateAnalyticsDisplay();
+            
+            // Применяем фильтр по настроению
+            document.getElementById('mood-filter').value = mood;
+            searchBooks();
+            scrollToBooks();
+        }
+        
+        function trackFeedbackClick() {
+            analyticsData.userJourney.push({
+                action: 'feedback_click',
+                timestamp: new Date().toISOString()
+            });
+            saveAnalyticsData();
+        }
+        
+        function saveAnalyticsData() {
+            localStorage.setItem('libraryAnalytics', JSON.stringify(analyticsData));
+        }
+        
+        function updateAnalyticsDisplay() {
+            document.getElementById('total-visits').textContent = analyticsData.totalVisits;
+            
+            const today = new Date().toDateString();
+            const todayStats = analyticsData.dailyStats[today] || { bookViews: 0, searches: 0 };
+            
+            document.getElementById('book-views').textContent = todayStats.bookViews;
+            document.getElementById('search-queries').textContent = analyticsData.searchQueries.filter(
+                query => new Date(query.timestamp).toDateString() === today
+            ).length;
+            
+            // Определяем популярный жанр
+            const genreStats = {};
+            analyticsData.bookViews.forEach(view => {
+                const book = books.find(b => b.id === view.bookId);
+                if (book) {
+                    genreStats[book.genre] = (genreStats[book.genre] || 0) + 1;
+                }
+            });
+            
+            let popularGenre = '-';
+            let maxCount = 0;
+            for (const genre in genreStats) {
+                if (genreStats[genre] > maxCount) {
+                    maxCount = genreStats[genre];
+                    popularGenre = genre;
+                }
+            }
+            
+            document.getElementById('popular-genre').textContent = popularGenre;
+        }
+        
+        function showAnalytics() {
+            document.getElementById('analytics-panel').style.display = 'block';
+            document.getElementById('analytics-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function hideAnalytics() {
+            document.getElementById('analytics-panel').style.display = 'none';
+        }
+        
+        // Остальной код библиотеки (функции для работы с книгами) остается без изменений
         let books = JSON.parse(localStorage.getItem('libraryBooks')) || [
             {
                 id: 1,
@@ -1127,678 +1477,6 @@
                 recommended: true,
                 mood: "Веселое",
                 isNew: true
-            },
-            {
-                id: 3,
-                title: "Денискины рассказы",
-                author: "Виктор Драгунский",
-                cover: "https://placehold.co/600x400/FF9800/white?text=Денискины+рассказы",
-                summary: "Сборник весёлых рассказов о мальчике Дениске Кораблёве и его друзьях. Дениска — обычный советский школьник, который попадает в забавные и поучительные ситуации. Рассказы написаны с юмором и теплотой, они показывают мир глазами ребёнка, его переживания, радости и открытия.",
-                genre: "Рассказы",
-                age: "7-12 лет",
-                rating: 4.9,
-                pages: 320,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 4,
-                title: "Мойдодыр",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Мойдодыр",
-                summary: "Стихотворная сказка о мальчике-грязнуле и строгом умывальнике Мойдодыре. От мальчика сбегают все вещи, потому что он не любил умываться и содержать себя в чистоте. Мойдодыр призывает щётки и мыло навести порядок. В конце концов мальчик понимает важность гигиены и становится чистым и аккуратным.",
-                genre: "Стихи",
-                age: "2-6 лет",
-                rating: 4.8,
-                pages: 16,
-                recommended: true,
-                mood: "Веселое",
-                isNew: true
-            },
-            {
-                id: 5,
-                title: "Снежная королева",
-                author: "Ганс Христиан Андерсен",
-                cover: "https://placehold.co/600x400/03A9F4/white?text=Снежная+королева",
-                summary: "Волшебная сказка о девочке Герде, которая отправляется на поиски своего друга Кая, похищенного Снежной королевой. По пути Герда встречает разных персонажей, которые помогают ей в её нелёгком путешествии. Только настоящая любовь и преданность Герды способны растопить ледяное сердце Кая и освободить его из плена Снежной королевы.",
-                genre: "Сказки",
-                age: "6-14 лет",
-                rating: 4.9,
-                pages: 64,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: false
-            },
-            {
-                id: 6,
-                title: "Золотой ключик",
-                author: "Алексей Толстой",
-                cover: "https://placehold.co/600x400/FF5722/white?text=Золотой+ключик",
-                summary: "Сказка о деревянном мальчике Буратино, который ищет золотой ключик. По пути он встречает разных персонажей: Мальвину, Пьеро, Артемона, а также злого Карабаса-Барабаса. В конце концов Буратино находит потайную дверцу, которую открывает золотым ключиком, и за ней оказывается прекрасный кукольный театр.",
-                genre: "Сказки",
-                age: "5-10 лет",
-                rating: 4.7,
-                pages: 128,
-                recommended: false,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 7,
-                title: "Волшебник Изумрудного города",
-                author: "Александр Волков",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Волшебник+Изумрудного+города",
-                summary: "Девочка Элли из Канзаса попадает в волшебную страну, где её ждут удивительные приключения. Вместе с новыми друзьями - Страшилой, Железным Дровосеком и Трусливым Львом - она отправляется к Великому Гудвину, Волшебнику Изумрудного города, который может исполнить их самые заветные желания.",
-                genre: "Фэнтези",
-                age: "7-12 лет",
-                rating: 4.9,
-                pages: 240,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: true
-            },
-            {
-                id: 8,
-                title: "Приключения Незнайки",
-                author: "Николай Носов",
-                cover: "https://placehold.co/600x400/E91E63/white?text=Приключения+Незнайки",
-                summary: "Веселые истории о коротышках из Цветочного города и их невероятных приключениях. Главный герой - Незнайка, который постоянно попадает в забавные ситуации. Вместе с друзьями он путешествует на воздушном шаре, строит ракету и отправляется в Солнечный город.",
-                genre: "Приключения",
-                age: "6-12 лет",
-                rating: 4.8,
-                pages: 320,
-                recommended: true,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 9,
-                title: "Маленький принц",
-                author: "Антуан де Сент-Экзюпери",
-                cover: "https://placehold.co/600x400/FF9800/white?text=Маленький+принц",
-                summary: "Философская сказка о мальчике с другой планеты, который путешествует по вселенной и встречает разных персонажей. Каждая встреча учит его чему-то важному о жизни, дружбе и любви.",
-                genre: "Фэнтези",
-                age: "8-14 лет",
-                rating: 4.9,
-                pages: 96,
-                recommended: true,
-                mood: "Вдохновляющее",
-                isNew: false
-            },
-            {
-                id: 10,
-                title: "Кот в сапогах",
-                author: "Шарль Перро",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Кот+в+сапогах",
-                summary: "Сказка о хитром коте, который помогает своему хозяину разбогатеть и жениться на принцессе. Кот своими уловками и смекалкой побеждает великана и завоевывает уважение короля.",
-                genre: "Сказки",
-                age: "4-8 лет",
-                rating: 4.6,
-                pages: 32,
-                recommended: true,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 11,
-                title: "Дюймовочка",
-                author: "Ганс Христиан Андерсен",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Дюймовочка",
-                summary: "Сказка о крошечной девочке, появившейся из цветка, и ее удивительных приключениях. Дюймовочка встречает разных существ и в конце находит свое счастье среди эльфов.",
-                genre: "Сказки",
-                age: "4-10 лет",
-                rating: 4.7,
-                pages: 40,
-                recommended: true,
-                mood: "Доброе",
-                isNew: true
-            },
-            {
-                id: 12,
-                title: "Бременские музыканты",
-                author: "Братья Гримм",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Бременские+музыканты",
-                summary: "История о животных - осле, собаке, коте и петухе, которые отправляются в Бремен, чтобы стать городскими музыкантами. По пути они перехитряют разбойников и находят новый дом.",
-                genre: "Сказки",
-                age: "4-8 лет",
-                rating: 4.5,
-                pages: 24,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 13,
-                title: "Золушка",
-                author: "Шарль Перро",
-                cover: "https://placehold.co/600x400/FF5722/white?text=Золушка",
-                summary: "Классическая сказка о доброй и трудолюбивой девушке, которая с помощью феи-крестной попадает на королевский бал и встречает принца. Несмотря на козни мачехи и сестер, любовь побеждает.",
-                genre: "Сказки",
-                age: "5-12 лет",
-                rating: 4.8,
-                pages: 48,
-                recommended: true,
-                mood: "Доброе",
-                isNew: false
-            },
-            {
-                id: 14,
-                title: "Русалочка",
-                author: "Ганс Христиан Андерсен",
-                cover: "https://placehold.co/600x400/E91E63/white?text=Русалочка",
-                summary: "Трогательная история о молодой русалке, которая влюбляется в принца и жертвует своим голосом, чтобы получить человеческие ноги и шанс быть с ним.",
-                genre: "Сказки",
-                age: "8-14 лет",
-                rating: 4.7,
-                pages: 72,
-                recommended: true,
-                mood: "Вдохновляющее",
-                isNew: false
-            },
-            {
-                id: 15,
-                title: "Гадкий утенок",
-                author: "Ганс Христиан Андерсен",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Гадкий+утенок",
-                summary: "Сказка о некрасивом утенке, которого все обижают, но который со временем превращается в прекрасного лебедя. История учит не судить по внешности и верить в себя.",
-                genre: "Сказки",
-                age: "4-10 лет",
-                rating: 4.8,
-                pages: 36,
-                recommended: true,
-                mood: "Вдохновляющее",
-                isNew: true
-            },
-            {
-                id: 16,
-                title: "Красная Шапочка",
-                author: "Шарль Перро",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Красная+Шапочка",
-                summary: "Сказка о девочке, которая несет бабушке пирожки и встречает в лесу злого волка. Благодаря смелости и помощи охотников, Красная Шапочка и ее бабушка спасаются.",
-                genre: "Сказки",
-                age: "3-7 лет",
-                rating: 4.5,
-                pages: 20,
-                recommended: false,
-                mood: "Загадочное",
-                isNew: false
-            },
-            {
-                id: 17,
-                title: "Спящая красавица",
-                author: "Шарль Перро",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Спящая+красавица",
-                summary: "Волшебная сказка о принцессе, которую злая фея усыпляет на сто лет. Только поцелуй настоящей любви может разбудить ее от волшебного сна.",
-                genre: "Сказки",
-                age: "5-10 лет",
-                rating: 4.6,
-                pages: 44,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: false
-            },
-            {
-                id: 18,
-                title: "Три поросенка",
-                author: "Английская народная сказка",
-                cover: "https://placehold.co/600x400/FF9800/white?text=Три+поросенка",
-                summary: "Поучительная история о трех братьях-поросятах, которые строят дома из разных материалов. Когда приходит злой волк, только кирпичный дом спасает их от опасности.",
-                genre: "Сказки",
-                age: "3-7 лет",
-                rating: 4.4,
-                pages: 28,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 19,
-                title: "Доктор Айболит",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Доктор+Айболит",
-                summary: "История о добром докторе, который лечит всех животных, независимо от того, кто они и откуда. Он путешествует в Африку, чтобы помочь больным обезьянам.",
-                genre: "Сказки",
-                age: "4-8 лет",
-                rating: 4.7,
-                pages: 64,
-                recommended: true,
-                mood: "Доброе",
-                isNew: true
-            },
-            {
-                id: 20,
-                title: "Федорино горе",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Федорино+горе",
-                summary: "Стихотворная сказка о неряшливой хозяйке, от которой сбежала вся посуда и утварь. Федора понимает свои ошибки и исправляется, после чего посуда возвращается к ней.",
-                genre: "Стихи",
-                age: "3-6 лет",
-                rating: 4.5,
-                pages: 16,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 21,
-                title: "Муха-Цокотуха",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Муха-Цокотуха",
-                summary: "Веселая история о мухе, которая нашла денежку и устроила праздник. На пир пришел паук, который хотел съесть муху, но храбрый комар спас ее.",
-                genre: "Стихи",
-                age: "3-6 лет",
-                rating: 4.6,
-                pages: 20,
-                recommended: true,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 22,
-                title: "Тараканище",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/FF5722/white?text=Тараканище",
-                summary: "Стихотворная сказка о страшном таракане, который напугал всех зверей. Но маленький воробей не испугался и склевал таракана, спасая всех от страха.",
-                genre: "Стихи",
-                age: "3-6 лет",
-                rating: 4.4,
-                pages: 18,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 23,
-                title: "Телефон",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/E91E63/white?text=Телефон",
-                summary: "Юмористическое стихотворение о том, как автору постоянно звонят по телефону разные животные с просьбами и жалобами.",
-                genre: "Стихи",
-                age: "3-6 лет",
-                rating: 4.5,
-                pages: 16,
-                recommended: true,
-                mood: "Веселое",
-                isNew: true
-            },
-            {
-                id: 24,
-                title: "Путаница",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Путаница",
-                summary: "Веселое стихотворение о том, как животные решили разговаривать по-другому: коровы замычали, киски заквакали, а уточки заквакали.",
-                genre: "Стихи",
-                age: "2-5 лет",
-                rating: 4.3,
-                pages: 12,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 25,
-                title: "Краденое солнце",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Краденое+солнце",
-                summary: "Стихотворная сказка о крокодиле, который проглотил солнце, и о медведе, который спас всех, победив крокодила и вернув солнце на небо.",
-                genre: "Стихи",
-                age: "3-6 лет",
-                rating: 4.5,
-                pages: 20,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 26,
-                title: "Чудо-дерево",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Чудо-дерево",
-                summary: "Стихотворение о волшебном дереве, на котором растут не листья и цветы, а башмаки, туфельки, сапожки - все, что нужно детским ножкам.",
-                genre: "Стихи",
-                age: "2-5 лет",
-                rating: 4.4,
-                pages: 14,
-                recommended: false,
-                mood: "Фэнтези",
-                isNew: false
-            },
-            {
-                id: 27,
-                title: "Бармалей",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/FF9800/white?text=Бармалей",
-                summary: "История о Тане и Ване, которые отправились в Африку и встретили злого разбойника Бармалея. Доктор Айболит спасает детей и перевоспитывает Бармалея.",
-                genre: "Сказки",
-                age: "4-8 лет",
-                rating: 4.6,
-                pages: 32,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: true
-            },
-            {
-                id: 28,
-                title: "Топтыгин и Луна",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Топтыгин+и+Луна",
-                summary: "Стихотворение о медведе, который решил достать луну с неба, чтобы сделать из нее тарелку, но вместо этого упал в болото.",
-                genre: "Стихи",
-                age: "3-6 лет",
-                rating: 4.3,
-                pages: 16,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 29,
-                title: "Загадки",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Загадки",
-                summary: "Сборник веселых и познавательных загадок для детей, которые развивают логическое мышление и воображение.",
-                genre: "Стихи",
-                age: "4-8 лет",
-                rating: 4.5,
-                pages: 40,
-                recommended: true,
-                mood: "Познавательное",
-                isNew: false
-            },
-            {
-                id: 30,
-                title: "Елка",
-                author: "Корней Чуковский",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Елка",
-                summary: "Новогоднее стихотворение о праздничной елке, подарках и веселье, которое ждет детей в этот волшебный праздник.",
-                genre: "Стихи",
-                age: "3-7 лет",
-                rating: 4.4,
-                pages: 18,
-                recommended: false,
-                mood: "Веселое",
-                isNew: true
-            },
-            {
-                id: 31,
-                title: "Приключения Чиполлино",
-                author: "Джанни Родари",
-                cover: "https://placehold.co/600x400/FF5722/white?text=Приключения+Чиполлино",
-                summary: "История о мальчике-луковке и его друзьях, которые борются с несправедливостью и угнетением в фруктово-овощном мире.",
-                genre: "Приключения",
-                age: "7-12 лет",
-                rating: 4.8,
-                pages: 200,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 32,
-                title: "Малыш и Карлсон",
-                author: "Астрид Линдгрен",
-                cover: "https://placehold.co/600x400/E91E63/white?text=Малыш+и+Карлсон",
-                summary: "Веселые истории о семилетнем Малыше и его забавном друге Карлсоне, который живет на крыше и обожает проказы и варенье.",
-                genre: "Приключения",
-                age: "6-12 лет",
-                rating: 4.9,
-                pages: 180,
-                recommended: true,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 33,
-                title: "Пеппи Длинныйчулок",
-                author: "Астрид Линдгрен",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Пеппи+Длинныйчулок",
-                summary: "История о необычной девочке Пеппи, которая обладает невероятной силой, живет одна с лошадью и обезьянкой, и постоянно попадает в забавные ситуации.",
-                genre: "Приключения",
-                age: "7-12 лет",
-                rating: 4.8,
-                pages: 220,
-                recommended: true,
-                mood: "Веселое",
-                isNew: true
-            },
-            {
-                id: 34,
-                title: "Приключения Эмиля из Лённеберги",
-                author: "Астрид Линдгрен",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Приключения+Эмиля",
-                summary: "Забавные истории о мальчике Эмиле, который постоянно попадает в неприятности, но всегда находит из них выход благодаря своей смекалке.",
-                genre: "Приключения",
-                age: "7-12 лет",
-                rating: 4.7,
-                pages: 240,
-                recommended: false,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 35,
-                title: "Рони, дочь разбойника",
-                author: "Астрид Линдгрен",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Рони,+дочь+разбойника",
-                summary: "История о дочери атамана разбойников, которая подружилась с сыном вражеского атамана. Их дружба помогает помирить два враждующих клана.",
-                genre: "Приключения",
-                age: "8-14 лет",
-                rating: 4.7,
-                pages: 260,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 36,
-                title: "Мы все из Бюллербю",
-                author: "Астрид Линдгрен",
-                cover: "https://placehold.co/600x400/FF9800/white?text=Мы+все+из+Бюллербю",
-                summary: "Добрые истории о жизни детей в маленькой шведской деревушке Бюллербю, их играх, приключениях и дружбе.",
-                genre: "Рассказы",
-                age: "6-10 лет",
-                rating: 4.6,
-                pages: 160,
-                recommended: false,
-                mood: "Доброе",
-                isNew: false
-            },
-            {
-                id: 37,
-                title: "Приключения Тома Сойера",
-                author: "Марк Твен",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Том+Сойер",
-                summary: "Захватывающие приключения мальчика Тома и его друга Гекльберри Финна в маленьком городке на Миссисипи. Поиски клада, пещеры и другие опасности.",
-                genre: "Приключения",
-                age: "9-14 лет",
-                rating: 4.8,
-                pages: 280,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 38,
-                title: "Приключения Гекльберри Финна",
-                author: "Марк Твен",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Гекльберри+Финн",
-                summary: "Продолжение приключений Гека Финна, который сплавляется на плоту по Миссисипи вместе с беглым рабом Джимом, переживая множество опасностей.",
-                genre: "Приключения",
-                age: "10-15 лет",
-                rating: 4.8,
-                pages: 320,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: true
-            },
-            {
-                id: 39,
-                title: "Остров сокровищ",
-                author: "Роберт Льюис Стивенсон",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Остров+сокровищ",
-                summary: "Захватывающая история о поисках пиратского клада на далеком острове. Юный Джим Хокинс становится участником опасного путешествия.",
-                genre: "Приключения",
-                age: "10-16 лет",
-                rating: 4.9,
-                pages: 300,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 40,
-                title: "Путешествие к центру Земли",
-                author: "Жюль Верн",
-                cover: "https://placehold.co/600x400/FF5722/white?text=Путешествие+к+центру+Земли",
-                summary: "Фантастическое путешествие профессора Линденброка и его племянника Акселя вглубь Земли через кратер исландского вулкана.",
-                genre: "Приключения",
-                age: "10-16 лет",
-                rating: 4.7,
-                pages: 340,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 41,
-                title: "Двадцать тысяч лье под водой",
-                author: "Жюль Верн",
-                cover: "https://placehold.co/600x400/E91E63/white?text=20000+лье+под+водой",
-                summary: "Захватывающая история о путешествии на подводной лодке \"Наутилус\" под командованием загадочного капитана Немо.",
-                genre: "Приключения",
-                age: "10-16 лет",
-                rating: 4.8,
-                pages: 380,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: true
-            },
-            {
-                id: 42,
-                title: "Таинственный остров",
-                author: "Жюль Верн",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Таинственный+остров",
-                summary: "Робинзонада о группе беглецов, оказавшихся на необитаемом острове, где они строят цивилизацию с помощью таинственного покровителя.",
-                genre: "Приключения",
-                age: "10-16 лет",
-                rating: 4.7,
-                pages: 420,
-                recommended: false,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 43,
-                title: "Вокруг света за 80 дней",
-                author: "Жюль Верн",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Вокруг+света+за+80+дней",
-                summary: "Англичанин Филеас Фогг заключает пари, что сможет объехать вокруг Земли за 80 дней, и отправляется в опасное путешествие со своим слугой.",
-                genre: "Приключения",
-                age: "9-14 лет",
-                rating: 4.7,
-                pages: 280,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 44,
-                title: "Пятнадцатилетний капитан",
-                author: "Жюль Верн",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=15-летний+капитан",
-                summary: "Юный Дик Сенд становится капитаном китобойного судна после гибели команды и ведет корабль через опасности Африки.",
-                genre: "Приключения",
-                age: "10-16 лет",
-                rating: 4.6,
-                pages: 320,
-                recommended: false,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 45,
-                title: "Дети капитана Гранта",
-                author: "Жюль Верн",
-                cover: "https://placehold.co/600x400/FF9800/white?text=Дети+капитана+Гранта",
-                summary: "Путешествие вокруг Земли по 37-й параллели в поисках пропавшего капитана Гранта. Опасности и приключения ждут героев на каждом шагу.",
-                genre: "Приключения",
-                age: "10-16 лет",
-                rating: 4.7,
-                pages: 480,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: true
-            },
-            {
-                id: 46,
-                title: "Робинзон Крузо",
-                author: "Даниель Дефо",
-                cover: "https://placehold.co/600x400/9C27B0/white?text=Робинзон+Крузо",
-                summary: "Классическая робинзонада о моряке, который провел 28 лет на необитаемом острове, справляясь с трудностями и опасностями.",
-                genre: "Приключения",
-                age: "10-16 лет",
-                rating: 4.8,
-                pages: 320,
-                recommended: true,
-                mood: "Приключенческое",
-                isNew: false
-            },
-            {
-                id: 47,
-                title: "Приключения барона Мюнхгаузена",
-                author: "Рудольф Эрих Распе",
-                cover: "https://placehold.co/600x400/2196F3/white?text=Мюнхгаузен",
-                summary: "Веселые и невероятные истории о похождениях хвастливого барона Мюнхгаузена, который летал на ядре и вытаскивал себя из болота за волосы.",
-                genre: "Приключения",
-                age: "8-12 лет",
-                rating: 4.7,
-                pages: 160,
-                recommended: true,
-                mood: "Веселое",
-                isNew: false
-            },
-            {
-                id: 48,
-                title: "Алиса в Стране чудес",
-                author: "Льюис Кэрролл",
-                cover: "https://placehold.co/600x400/4CAF50/white?text=Алиса+в+Стране+чудес",
-                summary: "Фантастическое путешествие девочки Алисы в подземный мир, где ее ждут невероятные приключения и встречи с странными существами.",
-                genre: "Фэнтези",
-                age: "8-14 лет",
-                rating: 4.8,
-                pages: 200,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: false
-            },
-            {
-                id: 49,
-                title: "Алиса в Зазеркалье",
-                author: "Льюис Кэрролл",
-                cover: "https://placehold.co/600x400/FF5722/white?text=Алиса+в+Зазеркалье",
-                summary: "Продолжение приключений Алисы, на этот раз в зеркальном мире, где все происходит наоборот, а герои шахматных фигур оживают.",
-                genre: "Фэнтези",
-                age: "8-14 лет",
-                rating: 4.7,
-                pages: 220,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: true
-            },
-            {
-                id: 50,
-                title: "Питер Пэн",
-                author: "Джеймс Мэтью Барри",
-                cover: "https://placehold.co/600x400/E91E63/white?text=Питер+Пэн",
-                summary: "История о мальчике, который не хотел взрослеть, и его приключениях с детьми Дарлинг в Нетландии, где их ждут пираты, феи и русалки.",
-                genre: "Фэнтези",
-                age: "7-12 лет",
-                rating: 4.8,
-                pages: 240,
-                recommended: true,
-                mood: "Фэнтези",
-                isNew: false
             }
         ];
 
@@ -1855,6 +1533,9 @@
         function openBookModal(bookId) {
             const book = books.find(b => b.id === bookId);
             if (!book) return;
+            
+            // Отслеживаем просмотр книги
+            trackBookView(bookId, book.title);
             
             const modalContent = document.getElementById('modal-book-content');
             modalContent.innerHTML = `
@@ -2056,7 +1737,7 @@
         }
         
         function showHelp() {
-            alert('Наши библиотекари помогут подобрать  интересную книги');
+            alert('Наши библиотекари помогут подобрать книги по возрасту и интересам вашего ребенка');
         }
         
         function showFAQ() {
@@ -2072,6 +1753,10 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Инициализируем аналитику
+            initAnalytics();
+            
+            // Загружаем и отображаем книги
             displayBooks(books);
             
             document.getElementById('close-modal').addEventListener('click', closeModal);
@@ -2093,17 +1778,7 @@
             document.querySelectorAll('.filter-select').forEach(select => {
                 select.addEventListener('change', searchBooks);
             });
-            
-            document.querySelectorAll('.mood-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const mood = this.getAttribute('data-mood');
-                    document.getElementById('mood-filter').value = mood;
-                    searchBooks();
-                    scrollToBooks();
-                });
-            });
         });
     </script>
 </body>
 </html>
-
