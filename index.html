@@ -893,6 +893,66 @@
             margin-top: 2rem;
         }
 
+        /* Стили для загрузки изображений */
+        .image-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 5px;
+            border: 2px dashed #e9ecef;
+            display: none;
+        }
+
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .upload-btn:hover {
+            background: var(--secondary);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .image-url-input {
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .image-url-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .url-toggle {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -999,9 +1059,8 @@
     <section class="hero">
         <div class="hero-content">
             <h2 class="handwriting">Добро пожаловать в мир сказок!</h2>
-            <p>Старт космического корабля... Погоня за сокровищами... Разгадка древнего заговора...
-Всё это ждёт тебя на страницах наших книг.</p>
-            <button class="btn btn-primary" onclick="scrollToBooks()"><i class="fas fa-book"></i> Найти книгу </button>
+            <p>Библиотека, где каждая книга - это новое приключение. Откройте для своего ребенка волшебный мир чтения.</p>
+            <button class="btn btn-primary" onclick="scrollToBooks()"><i class="fas fa-book"></i> Найти книгу мечты</button>
         </div>
     </section>
 
@@ -1192,6 +1251,19 @@
                 <div class="form-group full-width">
                     <label for="admin-summary">Описание книги</label>
                     <textarea id="admin-summary" rows="4" placeholder="Введите описание книги"></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label>Обложка книги</label>
+                    <div class="image-upload-container">
+                        <img id="image-preview" class="image-preview" alt="Предпросмотр обложки">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('file-input').click()">
+                            <i class="fas fa-upload"></i> Загрузить изображение
+                        </button>
+                        <input type="file" id="file-input" class="file-input" accept="image/*" onchange="handleImageUpload(event)">
+                        <p style="text-align: center; margin: 10px 0; font-size: 0.9rem; color: #6c757d;">ИЛИ</p>
+                        <input type="text" id="image-url" class="image-url-input" placeholder="Введите URL изображения">
+                        <button type="button" class="url-toggle" onclick="toggleImageSource()">Или ввести URL вручную</button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>
@@ -1458,6 +1530,8 @@
 
         // Переменная для отслеживания, показываем ли мы все книги или только часть
         let showingAllBooks = false;
+        // Переменная для хранения загруженного изображения
+        let uploadedImage = null;
 
         function saveBooksToStorage() {
             localStorage.setItem('libraryBooks', JSON.stringify(books));
@@ -1486,9 +1560,7 @@
                 bookCard.innerHTML = `
                     ${book.recommended ? '<div class="book-badge">Рекомендуем</div>' : ''}
                     ${book.isNew ? '<div class="book-badge new">NEW</div>' : ''}
-                    <div class="placeholder-cover">
-                        ${book.title}
-                    </div>
+                    <img src="${book.cover}" alt="${book.title}" class="book-cover">
                     <div class="book-info">
                         <h3 class="book-title">${book.title}</h3>
                         <p class="book-author">${book.author}</p>
@@ -1531,9 +1603,7 @@
             
             const modalContent = document.getElementById('modal-book-content');
             modalContent.innerHTML = `
-                <div class="modal-placeholder">
-                    ${book.title}
-                </div>
+                <img src="${book.cover}" alt="${book.title}" class="modal-book-cover">
                 <div class="modal-book-info">
                     <h2 class="modal-book-title">${book.title}</h2>
                     <p class="modal-book-author">${book.author}</p>
@@ -1613,6 +1683,40 @@
             document.getElementById('events-section').scrollIntoView({ behavior: 'smooth' });
         }
 
+        // Функции для работы с изображениями
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagePreview = document.getElementById('image-preview');
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadedImage = e.target.result;
+                    
+                    // Очищаем поле URL, если использовали загрузку файла
+                    document.getElementById('image-url').value = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function toggleImageSource() {
+            const urlInput = document.getElementById('image-url');
+            const fileInput = document.getElementById('file-input');
+            const imagePreview = document.getElementById('image-preview');
+            
+            if (urlInput.style.display === 'none') {
+                urlInput.style.display = 'block';
+                fileInput.style.display = 'none';
+                imagePreview.style.display = 'none';
+                uploadedImage = null;
+            } else {
+                urlInput.style.display = 'none';
+                fileInput.style.display = 'block';
+            }
+        }
+
         function searchBooks() {
             const searchTerm = document.getElementById('search-input').value.toLowerCase();
             const genreFilter = document.getElementById('genre-filter').value;
@@ -1685,6 +1789,9 @@
             document.getElementById('admin-summary').value = '';
             document.getElementById('admin-recommended').checked = false;
             document.getElementById('admin-new').checked = false;
+            document.getElementById('image-url').value = '';
+            document.getElementById('image-preview').style.display = 'none';
+            uploadedImage = null;
         }
 
         function addBookFromAdmin() {
@@ -1697,17 +1804,29 @@
             const summary = document.getElementById('admin-summary').value;
             const recommended = document.getElementById('admin-recommended').checked;
             const isNew = document.getElementById('admin-new').checked;
+            const imageUrl = document.getElementById('image-url').value;
 
             if (!title || !author || !genre || !age || !rating || !pages || !summary) {
-                alert('Пожалуйста, заполните все поля формы');
+                alert('Пожалуйста, заполните все обязательные поля формы');
                 return;
+            }
+
+            // Определяем URL обложки
+            let coverUrl;
+            if (uploadedImage) {
+                coverUrl = uploadedImage;
+            } else if (imageUrl) {
+                coverUrl = imageUrl;
+            } else {
+                // Генерируем placeholder с названием книги
+                coverUrl = `https://placehold.co/600x400/4e54c8/white?text=${encodeURIComponent(title)}`;
             }
 
             const newBook = {
                 id: Date.now(),
                 title,
                 author,
-                cover: "https://placehold.co/600x400/4e54c8/white?text=" + encodeURIComponent(title),
+                cover: coverUrl,
                 summary,
                 genre,
                 age,
@@ -1802,8 +1921,10 @@
                     scrollToBooks();
                 });
             });
+
+            // Инициализация поля URL изображения (скрыто по умолчанию)
+            document.getElementById('image-url').style.display = 'none';
         });
     </script>
 </body>
 </html>
-
