@@ -2285,3 +2285,760 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | Детская библиотека с. Ремонтное</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --accent: #ff9a76;
+            --accent2: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .handwriting {
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .user-section {
+            padding: 4rem 0;
+            min-height: 60vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--dark);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .user-info-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .user-details {
+            flex-grow: 1;
+        }
+
+        .user-name {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .user-role {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+
+        .reserved-books-section {
+            margin-top: 2rem;
+        }
+
+        .reserved-books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .reserved-book-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .reserved-book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .reserved-book-cover {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .reserved-book-info {
+            padding: 20px;
+        }
+
+        .reserved-book-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .reserved-book-author {
+            color: #6c757d;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .reserved-book-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        .reservation-date {
+            background: #e9ecef;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .reservation-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cancel-reservation-btn {
+            flex: 1;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            background: var(--accent2);
+            color: white;
+        }
+
+        .cancel-reservation-btn:hover {
+            background: #ff5252;
+        }
+
+        .no-reservations {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .no-reservations i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #dee2e6;
+        }
+
+        .no-reservations h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #6c757d;
+        }
+
+        .no-reservations p {
+            margin-bottom: 25px;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            animation: modalFadeIn 0.5s ease;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            z-index: 10;
+            background: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .user-info-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .reserved-books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reservation-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div class="logo-text">
+                    <h1 class="handwriting">Детская библиотека с. Ремонтное</h1>
+                    <p>Личный кабинет читателя</p>
+                </div>
+            </a>
+            <div class="header-buttons">
+                <a href="index.html" class="btn btn-outline">
+                    <i class="fas fa-home"></i> На главную
+                </a>
+                <button class="btn btn-primary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="user-section">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="handwriting">Личный кабинет</h2>
+                <p>Управление вашими бронированиями книг</p>
+            </div>
+
+            <div class="user-info-card" id="user-info-card">
+                <div class="user-avatar" id="user-avatar">U</div>
+                <div class="user-details">
+                    <h2 class="user-name" id="user-name">Пользователь</h2>
+                    <p class="user-role">Читатель библиотеки</p>
+                </div>
+            </div>
+
+            <div class="reserved-books-section">
+                <h3 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--dark);">Забронированные книги</h3>
+                <div class="reserved-books-grid" id="reserved-books-container">
+                    <!-- Здесь будут отображаться забронированные книги -->
+                </div>
+                <div class="no-reservations" id="no-reservations" style="display: none;">
+                    <i class="fas fa-book-open"></i>
+                    <h3>У вас нет забронированных книг</h3>
+                    <p>Найдите интересные книги в нашем каталоге и забронируйте их для чтения</p>
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Перейти к каталогу
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Разделы</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="index.html#books-section">Каталог книг</a></li>
+                        <li><a href="index.html#events-section">Мероприятия</a></li>
+                        <li><a href="user.html">Личный кабинет</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Помощь</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showHelp()">Как выбрать книгу?</a></li>
+                        <li><a href="#" onclick="showFAQ()">Частые вопросы</a></li>
+                        <li><a href="#" onclick="showRules()">Правила пользования</a></li>
+                        <li><a href="#" onclick="showContacts()">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> с. Ремонтное, ул. Дзержинского, 21</li>
+                        <li><i class="fas fa-phone"></i> +7 (863) 793-12-07</li>
+                        <li><i class="fas fa-envelope"></i> remdlib@mail.ru</li>
+                        <li><i class="fas fa-clock"></i> Пн-Чт: 9:00-17:15, Пт: 9:00-17:00, Вс: 09:00-16:00</li>
+                        <li>Последняя пятница месяца - санитарный день</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="https://vk.com/public204592757" class="social-link" target="_blank"><i class="fab fa-vk"></i></a>
+                        <a href="https://ok.ru/profile/586711958636" class="social-link" target="_blank"><i class="fab fa-odnoklassniki"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Детская библиотека с. Ремонтное. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно подтверждения отмены бронирования -->
+    <div class="modal" id="cancel-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCancelModal()">&times;</span>
+            <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: var(--warning); margin-bottom: 20px;"></i>
+            <h2 style="margin-bottom: 15px;">Отменить бронирование?</h2>
+            <p id="cancel-message" style="margin-bottom: 25px;">Вы уверены, что хотите отменить бронирование этой книги?</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="confirmCancel()">Да, отменить</button>
+                <button class="btn btn-outline" onclick="closeCancelModal()" style="background: #6c757d; color: white;">Нет, оставить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно выхода -->
+    <div class="modal" id="logout-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLogoutModal()">&times;</span>
+            <i class="fas fa-sign-out-alt" style="font-size: 4rem; color: var(--accent2); margin-bottom: 20px;"></i>
+            <h2 style="margin-bottom: 15px;">Выйти из системы?</h2>
+            <p style="margin-bottom: 25px;">Вы уверены, что хотите выйти из личного кабинета?</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="confirmLogout()">Да, выйти</button>
+                <button class="btn btn-outline" onclick="closeLogoutModal()" style="background: #6c757d; color: white;">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Данные
+        let reservations = JSON.parse(localStorage.getItem('libraryReservations')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let books = JSON.parse(localStorage.getItem('libraryBooks')) || [];
+        let reservationToCancel = null;
+
+        function saveReservationsToStorage() {
+            localStorage.setItem('libraryReservations', JSON.stringify(reservations));
+        }
+
+        function loadUserData() {
+            if (!currentUser) {
+                // Если пользователь не авторизован, перенаправляем на главную
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Обновляем информацию о пользователе
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+            // Загружаем бронирования пользователя
+            loadUserReservations();
+        }
+
+        function loadUserReservations() {
+            const container = document.getElementById('reserved-books-container');
+            const noReservations = document.getElementById('no-reservations');
+
+            // Фильтруем бронирования текущего пользователя
+            const userReservations = reservations.filter(r => r.userId === currentUser.id);
+
+            if (userReservations.length === 0) {
+                container.style.display = 'none';
+                noReservations.style.display = 'block';
+                return;
+            }
+
+            container.style.display = 'grid';
+            noReservations.style.display = 'none';
+
+            // Отображаем забронированные книги
+            container.innerHTML = userReservations.map(reservation => {
+                const book = books.find(b => b.id === reservation.bookId);
+                if (!book) return '';
+
+                return `
+                    <div class="reserved-book-card">
+                        <img src="${book.cover}" alt="${book.title}" class="reserved-book-cover">
+                        <div class="reserved-book-info">
+                            <h3 class="reserved-book-title">${book.title}</h3>
+                            <p class="reserved-book-author">${book.author}</p>
+                            <div class="reserved-book-meta">
+                                <span class="book-genre">${book.genre}</span>
+                                <span class="reservation-date">${reservation.date}</span>
+                            </div>
+                            <div class="reservation-actions">
+                                <button class="cancel-reservation-btn" onclick="openCancelModal(${reservation.id})">
+                                    <i class="fas fa-times"></i> Отменить бронь
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openCancelModal(reservationId) {
+            reservationToCancel = reservationId;
+            const reservation = reservations.find(r => r.id === reservationId);
+            if (reservation) {
+                document.getElementById('cancel-message').textContent = `Вы уверены, что хотите отменить бронирование книги "${reservation.bookTitle}"?`;
+            }
+            document.getElementById('cancel-modal').style.display = 'flex';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancel-modal').style.display = 'none';
+            reservationToCancel = null;
+        }
+
+        function confirmCancel() {
+            if (reservationToCancel) {
+                // Удаляем бронирование
+                reservations = reservations.filter(r => r.id !== reservationToCancel);
+                saveReservationsToStorage();
+                
+                // Обновляем отображение
+                loadUserReservations();
+                
+                // Закрываем модальное окно
+                closeCancelModal();
+                
+                // Показываем уведомление
+                alert('Бронирование успешно отменено!');
+            }
+        }
+
+        function logout() {
+            document.getElementById('logout-modal').style.display = 'flex';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logout-modal').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            // Очищаем текущего пользователя
+            localStorage.removeItem('currentUser');
+            
+            // Перенаправляем на главную страницу
+            window.location.href = 'index.html';
+        }
+
+        // Вспомогательные функции
+        function showHelp() {
+            alert('Наши библиотекари помогут подобрать книги по возрасту и интересам вашего ребенка');
+        }
+
+        function showFAQ() {
+            alert('Часто задаваемые вопросы будут доступны в ближайшее время');
+        }
+
+        function showRules() {
+            alert('Правила пользования библиотекой:\n1. Книги выдаются на 14 дней\n2. Возможно продление по телефону\n3. Бережное обращение с книгами обязательно');
+        }
+
+        function showContacts() {
+            alert('Наши контакты:\nс. Ремонтное, ул. Дзержинского, 21\nТелефон: +7 (863) 793-12-07\nEmail: remdlib@mail.ru\nГрафик работы: Пн-Чт: 9:00-17:15, Пт: 9:00-17:00, Вс: 09:00-16:00\nПоследняя пятница месяца - санитарный день');
+        }
+
+        // Загружаем данные при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+        });
+    </script>
+</body>
+</html>
